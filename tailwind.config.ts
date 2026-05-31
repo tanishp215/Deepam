@@ -9,104 +9,57 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Indian Heritage Palette
-        // Deepam dark ground
-        ground: {
-          DEFAULT: "#0D0A07",
-          50: "#1A1410",
-          100: "#241D16",
-          200: "#2E261C",
-        },
-        // Saffron - primary sacred color
-        saffron: {
-          DEFAULT: "#F97316",
-          light: "#FB923C",
-          dark: "#EA580C",
-          glow: "#FED7AA",
-        },
-        // Marigold gold - festival color
-        marigold: {
-          DEFAULT: "#F59E0B",
-          light: "#FCD34D",
-          dark: "#D97706",
-          pale: "#FEF3C7",
-        },
-        // Crimson - kumkum / sindoor
-        crimson: {
-          DEFAULT: "#DC2626",
-          light: "#EF4444",
-          dark: "#B91C1C",
-          pale: "#FEE2E2",
-        },
-        // Temple stone warm neutral
-        stone: {
-          warm: "#78716C",
-          mid: "#44403C",
-          deep: "#1C1917",
-        },
-        // Text colors
-        ink: {
-          DEFAULT: "#FAFAF9",
-          muted: "#A8A29E",
-          soft: "#D6D3D1",
-        },
-        // State colors for temple indicators
+        dark:      "#0D0A07",
+        white:     "#ffffff",
+        muted:     "#78716C",
+        saffron:   "#F97316",
+        marigold:  "#F59E0B",
+        gold:      "#FCD34D",
+        // Data-viz state colors — kept for map markers and indicators
         state: {
           sustaining: "#F59E0B",
-          lightly: "#F97316",
-          seriously: "#EF4444",
-          stripped: "#7F1D1D",
-          unknown: "#57534E",
+          lightly:    "#F97316",
+          seriously:  "#EF4444",
+          stripped:   "#7F1D1D",
+          unknown:    "#78716C",
         },
       },
       fontFamily: {
-        display: ["var(--font-cormorant)", "Georgia", "serif"],
-        body: ["var(--font-plus-jakarta)", "system-ui", "sans-serif"],
+        display: ["system-ui", "-apple-system", "BlinkMacSystemFont", '"Segoe UI"', "sans-serif"],
+        body:    ["system-ui", "-apple-system", "BlinkMacSystemFont", '"Segoe UI"', "sans-serif"],
       },
-      backgroundImage: {
-        "radial-saffron":
-          "radial-gradient(ellipse at center, rgba(249,115,22,0.15) 0%, transparent 70%)",
-        "radial-gold":
-          "radial-gradient(ellipse at center, rgba(245,158,11,0.12) 0%, transparent 60%)",
-        "temple-texture":
-          "linear-gradient(135deg, #0D0A07 0%, #1A1410 50%, #0D0A07 100%)",
+      fontSize: {
+        "body-sm":    ["17px", { lineHeight: "1.61", letterSpacing: "0.01px" }],
+        subheading:   ["20px", { lineHeight: "1.2",  letterSpacing: "0.2px"  }],
+        "heading-sm": ["30px", { lineHeight: "1.1",  letterSpacing: "-0.3px" }],
+        heading:      ["52px", { lineHeight: "1.09", letterSpacing: "-0.52px"}],
+        "heading-lg": ["63px", { lineHeight: "0.91", letterSpacing: "-0.63px"}],
+        display:      ["clamp(80px,12vw,187px)", { lineHeight: "0.8", letterSpacing: "-3.74px" }],
       },
-      boxShadow: {
-        saffron: "0 0 20px rgba(249,115,22,0.4), 0 0 60px rgba(249,115,22,0.15)",
-        gold: "0 0 16px rgba(245,158,11,0.5), 0 0 40px rgba(245,158,11,0.2)",
-        crimson: "0 0 16px rgba(220,38,38,0.4), 0 0 40px rgba(220,38,38,0.1)",
-        "card-warm": "0 4px 24px rgba(0,0,0,0.6), 0 1px 0 rgba(249,115,22,0.08) inset",
-        "glow-sm": "0 0 8px rgba(249,115,22,0.6)",
-        "glow-md": "0 0 20px rgba(249,115,22,0.5), 0 0 40px rgba(249,115,22,0.2)",
-        "glow-lg": "0 0 30px rgba(245,158,11,0.6), 0 0 80px rgba(245,158,11,0.25)",
+      borderRadius: {
+        "4xl":  "45px",
+        "full": "1000px",
+      },
+      spacing: {
+        "11px": "11px",
+        "13px": "13px",
+        "15px": "15px",
+        "16px": "16px",
+        "17px": "17px",
+        "21px": "21px",
+        "22px": "22px",
+        "23px": "23px",
+        "31px": "31px",
+        "34px": "34px",
+        "38px": "38px",
+        "53px": "53px",
+        "59px": "59px",
+        "60px": "60px",
+        "68px": "68px",
+        "119px": "119px",
       },
       animation: {
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "flicker": "flicker 2.5s ease-in-out infinite",
-        "float": "float 6s ease-in-out infinite",
-        "shimmer": "shimmer 2s linear infinite",
-        "fade-up": "fadeUp 0.6s ease-out forwards",
-        "spin-slow": "spin 8s linear infinite",
-      },
-      keyframes: {
-        flicker: {
-          "0%, 100%": { opacity: "1", transform: "scale(1)" },
-          "25%": { opacity: "0.85", transform: "scale(0.97)" },
-          "50%": { opacity: "0.92", transform: "scale(1.02)" },
-          "75%": { opacity: "0.88", transform: "scale(0.99)" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-8px)" },
-        },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
-        },
-        fadeUp: {
-          from: { opacity: "0", transform: "translateY(24px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
       },
     },
   },

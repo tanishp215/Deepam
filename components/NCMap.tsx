@@ -87,49 +87,28 @@ export default function NCMap({
 
         // Popup
         const popupContent = `
-          <div style="padding: 4px 2px; min-width: 200px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <div style="padding:6px 2px;min-width:210px;font-family:system-ui,sans-serif;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
               <span style="
-                display:inline-block;
-                width:8px;height:8px;
-                border-radius:50%;
-                background:${color};
-                box-shadow:0 0 8px ${color};
-                flex-shrink:0;
+                display:inline-block;width:8px;height:8px;
+                border-radius:50%;background:${color};
+                box-shadow:0 0 8px ${color};flex-shrink:0;
               "></span>
-              <span style="
-                font-size:10px;
-                font-weight:600;
-                color:${color};
-                text-transform:uppercase;
-                letter-spacing:0.05em;
-              ">${STATE_LABELS[temple.deepamState]}</span>
+              <span style="font-size:11px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.06em;">
+                ${STATE_LABELS[temple.deepamState]}
+              </span>
             </div>
-            <h3 style="
-              font-family: 'Cormorant Garamond', Georgia, serif;
-              font-size:1.05rem;
-              font-weight:600;
-              color:#FAFAF9;
-              margin-bottom:4px;
-              line-height:1.25;
-            ">${temple.name}</h3>
-            <p style="font-size:12px;color:#A8A29E;margin-bottom:8px;">
-              ${temple.city}, NC &nbsp;&middot;&nbsp; ${temple.tradition}
+            <h3 style="font-size:17px;font-weight:700;color:#000d10;margin-bottom:4px;line-height:1.2;">
+              ${temple.name}
+            </h3>
+            <p style="font-size:14px;color:#8e8e95;margin-bottom:10px;">
+              ${temple.city}, NC &middot; ${temple.tradition}
             </p>
-            <a
-              href="/temples/${temple.id}"
-              style="
-                display:inline-block;
-                background:linear-gradient(135deg,#F97316,#EA580C);
-                color:#fff;
-                font-size:12px;
-                font-weight:600;
-                padding:5px 14px;
-                border-radius:6px;
-                text-decoration:none;
-                cursor:pointer;
-              "
-            >View profile</a>
+            <a href="/temples/${temple.id}" style="
+              display:inline-block;background:#F97316;color:#fff;
+              font-size:14px;font-weight:700;padding:8px 18px;
+              border-radius:1000px;text-decoration:none;cursor:pointer;
+            ">View profile</a>
           </div>
         `;
 

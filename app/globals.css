@@ -2,258 +2,193 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ───────────────────────────────────────────
-   Deepam Design System
-   Theme: Indian heritage dark — temple at night
-   Colors: Saffron, Marigold gold, Crimson, Deep ground
-─────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────
+   Deepam — Warm amber-dark theme
+   Base: #0D0A07 | Accent: saffron #F97316 | Gold: #F59E0B
+───────────────────────────────────────────────────── */
 
 @layer base {
   :root {
-    --font-cormorant: "Cormorant Garamond", Georgia, serif;
-    --font-plus-jakarta: "Plus Jakarta Sans", system-ui, sans-serif;
+    --color-base:     #0D0A07;
+    --color-surface:  #1A1410;
+    --color-raised:   #241D16;
+    --color-border:   rgba(249, 115, 22, 0.15);
+    --color-white:    #FAFAF9;
+    --color-muted:    #A8A29E;
+    --color-faint:    #78716C;
+    --color-saffron:  #F97316;
+    --color-marigold: #F59E0B;
+    --color-gold:     #FCD34D;
 
-    /* Ground palette */
-    --color-ground: #0d0a07;
-    --color-surface: #1a1410;
-    --color-surface-raised: #241d16;
-    --color-border: rgba(249, 115, 22, 0.12);
-    --color-border-subtle: rgba(255, 255, 255, 0.06);
+    --font-display: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-body:    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-    /* Brand palette */
-    --color-saffron: #f97316;
-    --color-saffron-light: #fb923c;
-    --color-marigold: #f59e0b;
-    --color-marigold-light: #fcd34d;
-    --color-crimson: #dc2626;
-    --color-crimson-light: #ef4444;
-
-    /* Text */
-    --color-ink: #fafaf9;
-    --color-ink-soft: #d6d3d1;
-    --color-ink-muted: #a8a29e;
-    --color-ink-faint: #57534e;
+    --radius-full: 1000px;
+    --radius-card: 45px;
   }
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
   }
 
   body {
-    background-color: var(--color-ground);
-    color: var(--color-ink);
-    font-family: var(--font-plus-jakarta);
-    font-size: 1rem;
-    line-height: 1.6;
+    background-color: var(--color-base);
+    color: var(--color-white);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.61;
   }
 
-  h1, h2, h3, h4 {
-    font-family: var(--font-cormorant);
-    font-weight: 600;
-    letter-spacing: -0.02em;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
     text-wrap: balance;
-    line-height: 1.15;
   }
 
-  h5, h6 {
-    font-family: var(--font-plus-jakarta);
-    font-weight: 600;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
+  a { color: inherit; text-decoration: none; }
 
   ::selection {
-    background: rgba(249, 115, 22, 0.25);
-    color: #fafaf9;
+    background: rgba(249, 115, 22, 0.3);
+    color: var(--color-white);
   }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--color-ground);
-  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--color-base); }
   ::-webkit-scrollbar-thumb {
     background: rgba(249, 115, 22, 0.3);
     border-radius: 3px;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(249, 115, 22, 0.5);
-  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(249, 115, 22, 0.55); }
 }
 
 @layer components {
-  /* ── Deepam glow effects ── */
-  .deepam-glow {
-    box-shadow:
-      0 0 20px rgba(249, 115, 22, 0.4),
-      0 0 60px rgba(249, 115, 22, 0.15);
+
+  /* ── Saffron filled pill ── */
+  .btn-primary {
+    background: linear-gradient(135deg, #F97316, #EA580C);
+    color: #FAFAF9;
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    padding: 15px 22px 16px;
+    border-radius: var(--radius-full);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+    line-height: 1;
+    box-shadow: 0 0 0 0 rgba(249,115,22,0);
+  }
+  .btn-primary:hover  { opacity: 0.88; box-shadow: 0 0 20px rgba(249,115,22,0.3); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  /* ── Ghost pill ── */
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-white);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    padding: 15px 22px 16px;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(249, 115, 22, 0.35);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    line-height: 1;
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-saffron);
+    background: rgba(249, 115, 22, 0.08);
   }
 
-  .deepam-glow-gold {
-    box-shadow:
-      0 0 20px rgba(245, 158, 11, 0.5),
-      0 0 60px rgba(245, 158, 11, 0.2);
+  /* ── Ghost on light cream sections ── */
+  .btn-ghost-dark {
+    background: transparent;
+    color: var(--color-base);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    padding: 15px 22px 16px;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(13, 10, 7, 0.25);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    line-height: 1;
+  }
+  .btn-ghost-dark:hover {
+    border-color: var(--color-saffron);
+    color: var(--color-saffron);
   }
 
-  .deepam-glow-text {
-    text-shadow:
-      0 0 20px rgba(245, 158, 11, 0.8),
-      0 0 40px rgba(249, 115, 22, 0.4);
-  }
-
-  /* ── Card base ── */
+  /* ── Card — default dark surface ── */
   .card-temple {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: var(--radius-card);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
   .card-temple:hover {
-    border-color: rgba(249, 115, 22, 0.3);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.4),
-      0 0 0 1px rgba(249, 115, 22, 0.1);
-    transform: translateY(-2px);
-  }
-
-  /* ── Saffron button ── */
-  .btn-saffron {
-    background: linear-gradient(135deg, #f97316, #ea580c);
-    color: #fff;
-    font-family: var(--font-plus-jakarta);
-    font-weight: 600;
-    font-size: 0.875rem;
-    padding: 0.625rem 1.5rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 0 0 0 rgba(249, 115, 22, 0);
-    letter-spacing: 0.01em;
-  }
-  .btn-saffron:hover {
-    box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
-    transform: translateY(-1px);
-  }
-  .btn-saffron:active {
-    transform: scale(0.98) translateY(0);
-  }
-
-  /* ── Ghost button ── */
-  .btn-ghost {
-    background: transparent;
-    color: var(--color-ink-soft);
-    font-family: var(--font-plus-jakarta);
-    font-weight: 500;
-    font-size: 0.875rem;
-    padding: 0.625rem 1.5rem;
-    border-radius: 8px;
-    border: 1px solid var(--color-border);
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .btn-ghost:hover {
     border-color: rgba(249, 115, 22, 0.4);
-    color: var(--color-saffron-light);
-    background: rgba(249, 115, 22, 0.06);
+    box-shadow: 0 8px 32px rgba(249, 115, 22, 0.08);
   }
 
-  /* ── Section heading ── */
-  .section-heading {
-    font-family: var(--font-cormorant);
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+  /* ── Card on raised surface ── */
+  .card-temple-raised {
+    background: var(--color-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-temple-raised:hover {
+    border-color: rgba(249, 115, 22, 0.45);
+    box-shadow: 0 8px 32px rgba(249, 115, 22, 0.1);
   }
 
-  /* ── Gold accent line ── */
-  .gold-rule {
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(245, 158, 11, 0.6),
-      transparent
-    );
-  }
-
-  /* ── State pill badge ── */
+  /* ── State badge ── */
   .state-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    font-family: var(--font-plus-jakarta);
-    padding: 0.25rem 0.625rem;
-    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-body);
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
     letter-spacing: 0.01em;
+    white-space: nowrap;
   }
 
-  /* ── Deepam lamp dot ── */
-  .lamp-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    position: relative;
-  }
-  .lamp-dot::before {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    opacity: 0.35;
-    background: currentColor;
-    filter: blur(4px);
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.09;
   }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  .font-display { font-family: var(--font-display); }
+  .font-body    { font-family: var(--font-body); }
+  .text-balance { text-wrap: balance; }
 
-  .font-display {
-    font-family: var(--font-cormorant);
-  }
-
-  .font-body {
-    font-family: var(--font-plus-jakarta);
-  }
-
-  /* Shimmer animation */
-  .shimmer {
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.04) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 2s linear infinite;
-  }
-
-  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
@@ -261,59 +196,41 @@
   }
 }
 
-/* ───────────────────────────────────────────
-   Leaflet map dark theme overrides
-─────────────────────────────────────────── */
-.leaflet-container {
-  background: #0d0a07 !important;
-  font-family: var(--font-plus-jakarta) !important;
-}
+/* ── Leaflet ── */
+.leaflet-container { background: #0D0A07 !important; font-family: system-ui !important; }
 .leaflet-popup-content-wrapper {
-  background: var(--color-surface) !important;
-  border: 1px solid rgba(249, 115, 22, 0.2) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
-  color: var(--color-ink) !important;
+  background: #1A1410 !important;
+  border: 1px solid rgba(249,115,22,0.2) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+  color: #FAFAF9 !important;
 }
-.leaflet-popup-tip {
-  background: var(--color-surface) !important;
-}
-.leaflet-popup-close-button {
-  color: var(--color-ink-muted) !important;
-}
-.leaflet-popup-close-button:hover {
-  color: var(--color-saffron) !important;
-}
+.leaflet-popup-tip { background: #1A1410 !important; }
+.leaflet-popup-close-button { color: #78716C !important; }
+.leaflet-popup-close-button:hover { color: #F97316 !important; }
 .leaflet-control-zoom a {
-  background: var(--color-surface) !important;
-  color: var(--color-ink-soft) !important;
-  border-color: rgba(249, 115, 22, 0.2) !important;
+  background: #1A1410 !important;
+  color: #A8A29E !important;
+  border-color: rgba(249,115,22,0.2) !important;
 }
-.leaflet-control-zoom a:hover {
-  background: var(--color-surface-raised) !important;
-  color: var(--color-saffron) !important;
-}
+.leaflet-control-zoom a:hover { color: #F97316 !important; background: #241D16 !important; }
 .leaflet-control-attribution {
-  background: rgba(13, 10, 7, 0.8) !important;
-  color: var(--color-ink-faint) !important;
+  background: rgba(13,10,7,0.85) !important;
+  color: #78716C !important;
   font-size: 10px !important;
-}
-
-/* Temple marker pulse ring */
-@keyframes marker-pulse {
-  0% { transform: scale(1); opacity: 0.8; }
-  70% { transform: scale(2.5); opacity: 0; }
-  100% { transform: scale(2.5); opacity: 0; }
 }
 
 @keyframes flicker {
   0%, 100% { opacity: 1; }
-  40% { opacity: 0.85; }
-  60% { opacity: 0.95; }
-  80% { opacity: 0.8; }
+  40%       { opacity: 0.8; }
+  80%       { opacity: 0.85; }
 }
-
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+@keyframes marker-pulse {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  70%  { transform: scale(2.5); opacity: 0; }
+  100% { transform: scale(2.5); opacity: 0; }
 }

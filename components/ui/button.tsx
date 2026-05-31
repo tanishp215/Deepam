@@ -4,28 +4,32 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0A07] disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
+        // Desert Sienna filled — primary CTA
         default:
-          "bg-gradient-to-r from-[#F97316] to-[#EA580C] text-white hover:opacity-90",
+          "bg-[#F97316] text-white hover:opacity-88 active:scale-[0.98]",
+        // Obsidian filled
+        secondary:
+          "bg-[#0D0A07] text-white border border-transparent hover:border-white active:scale-[0.98]",
+        // Ghost on dark surface
+        outline:
+          "bg-transparent text-white border border-white hover:bg-white/8",
+        // Ghost on light surface
+        ghost:
+          "bg-transparent text-[#000d10] border border-[#000d10] hover:bg-[rgba(0,13,16,0.05)]",
         destructive:
           "bg-red-600 text-white hover:bg-red-700",
-        outline:
-          "border border-[rgba(249,115,22,0.2)] bg-transparent text-[#D6D3D1] hover:border-[rgba(249,115,22,0.45)] hover:text-[#F97316] hover:bg-[rgba(249,115,22,0.05)]",
-        secondary:
-          "bg-[#1A1410] text-[#D6D3D1] border border-[rgba(249,115,22,0.1)] hover:bg-[#241D16] hover:text-[#FAFAF9]",
-        ghost:
-          "bg-transparent text-[#A8A29E] hover:bg-[rgba(255,255,255,0.04)] hover:text-[#FAFAF9]",
         link:
-          "text-[#F97316] underline-offset-4 hover:underline",
+          "text-[#bc7155] underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        default: "text-[17px] rounded-full px-[22px] pt-[15px] pb-[16px] leading-none",
+        sm:      "text-[17px] rounded-full px-[16px] pt-[11px] pb-[12px] leading-none",
+        lg:      "text-[17px] rounded-full px-[34px] pt-[17px] pb-[18px] leading-none",
+        icon:    "h-10 w-10 rounded-full",
       },
     },
     defaultVariants: {

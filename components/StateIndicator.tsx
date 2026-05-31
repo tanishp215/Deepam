@@ -9,21 +9,21 @@ interface StateIndicatorProps {
 }
 
 const STATE_BG: Record<DeepamState, string> = {
-  sustaining: "rgba(245,158,11,0.12)",
-  "lightly-compromising": "rgba(249,115,22,0.12)",
-  "seriously-compromising": "rgba(239,68,68,0.12)",
-  "stripped-down": "rgba(127,29,29,0.2)",
-  "insufficient-evidence": "rgba(87,83,78,0.15)",
-  "pre-operational": "rgba(55,65,81,0.15)",
+  "sustaining":             "rgba(245,158,11,0.15)",
+  "lightly-compromising":   "rgba(249,115,22,0.15)",
+  "seriously-compromising": "rgba(239,68,68,0.15)",
+  "stripped-down":          "rgba(127,29,29,0.2)",
+  "insufficient-evidence":  "rgba(120,113,108,0.15)",
+  "pre-operational":        "rgba(55,65,81,0.15)",
 };
 
 const STATE_TEXT: Record<DeepamState, string> = {
-  sustaining: "#FCD34D",
-  "lightly-compromising": "#FB923C",
-  "seriously-compromising": "#EF4444",
-  "stripped-down": "#F87171",
-  "insufficient-evidence": "#A8A29E",
-  "pre-operational": "#9CA3AF",
+  "sustaining":             "#FCD34D",
+  "lightly-compromising":   "#FB923C",
+  "seriously-compromising": "#F87171",
+  "stripped-down":          "#FCA5A5",
+  "insufficient-evidence":  "#A8A29E",
+  "pre-operational":        "#9CA3AF",
 };
 
 export default function StateIndicator({
@@ -32,35 +32,23 @@ export default function StateIndicator({
   showLabel = true,
   className,
 }: StateIndicatorProps) {
-  const color = STATE_COLORS[state];
+  const color   = STATE_COLORS[state];
   const textColor = STATE_TEXT[state];
-  const bg = STATE_BG[state];
-  const label = STATE_LABELS[state];
-
+  const bg      = STATE_BG[state];
+  const label   = STATE_LABELS[state];
   const dotSize = size === "sm" ? 6 : size === "lg" ? 12 : 8;
-  const glowSize = dotSize * 2.5;
 
   return (
-    <div
-      className={cn("state-badge", className)}
-      style={{ background: bg, color: textColor }}
-    >
-      {/* Lamp dot */}
-      <span
-        className="relative flex-shrink-0"
-        style={{ width: dotSize, height: dotSize }}
-      >
+    <div className={cn("state-badge", className)} style={{ background: bg, color: textColor }}>
+      <span className="relative flex-shrink-0" style={{ width: dotSize, height: dotSize }}>
         <span
           className="absolute inset-0 rounded-full"
-          style={{
-            background: color,
-            boxShadow: `0 0 ${glowSize}px ${color}`,
-          }}
+          style={{ background: color, boxShadow: `0 0 ${dotSize * 2}px ${color}80` }}
         />
-        {(state === "sustaining" || state === "lightly-compromising") && (
+        {state === "sustaining" && (
           <span
-            className="absolute inset-0 rounded-full animate-pulse-slow"
-            style={{ background: color, opacity: 0.5 }}
+            className="absolute inset-0 rounded-full animate-pulse-slow opacity-40"
+            style={{ background: color }}
           />
         )}
       </span>
@@ -69,30 +57,17 @@ export default function StateIndicator({
   );
 }
 
-/* Standalone dot for map legends and compact views */
-export function StateDot({
-  state,
-  size = 10,
-}: {
-  state: DeepamState;
-  size?: number;
-}) {
+export function StateDot({ state, size = 10 }: { state: DeepamState; size?: number }) {
   const color = STATE_COLORS[state];
   return (
-    <span
-      className="relative inline-flex flex-shrink-0"
-      style={{ width: size, height: size }}
-    >
+    <span className="relative inline-flex flex-shrink-0" style={{ width: size, height: size }}>
       <span
         className="absolute inset-0 rounded-full"
-        style={{
-          background: color,
-          boxShadow: `0 0 ${size * 1.5}px ${color}60`,
-        }}
+        style={{ background: color, boxShadow: `0 0 ${size * 1.5}px ${color}60` }}
       />
-      {(state === "sustaining") && (
+      {state === "sustaining" && (
         <span
-          className="absolute inset-0 rounded-full animate-pulse-slow opacity-50"
+          className="absolute inset-0 rounded-full animate-pulse-slow opacity-40"
           style={{ background: color }}
         />
       )}

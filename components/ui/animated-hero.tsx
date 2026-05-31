@@ -2,7 +2,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { MoveRight, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 function Hero() {
@@ -13,48 +12,58 @@ function Hero() {
   );
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (titleNumber === titles.length - 1) {
-        setTitleNumber(0);
-      } else {
-        setTitleNumber(titleNumber + 1);
-      }
+    const id = setTimeout(() => {
+      setTitleNumber((n) => (n === titles.length - 1 ? 0 : n + 1));
     }, 2000);
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(id);
   }, [titleNumber, titles]);
 
   return (
-    <div className="w-full min-h-[100dvh] bg-[#0D0A07] flex items-center">
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex gap-8 py-24 lg:py-40 items-center justify-center flex-col">
+    <div className="w-full min-h-[100dvh] bg-[#0D0A07] flex items-center relative overflow-hidden">
+      {/* Subtle ambient glow */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse, rgba(249,115,22,0.07) 0%, transparent 70%)",
+          filter: "blur(60px)",
+        }}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+        <div className="flex flex-col items-center justify-center gap-[23px] py-[119px]">
 
           {/* Badge */}
           <div>
-            <Button variant="secondary" size="sm" className="gap-3 font-body">
+            <Link href="/about" className="btn-ghost gap-3" style={{ fontSize: "15px" }}>
               A probabilistic framework for diaspora temples
               <MoveRight className="w-4 h-4" />
-            </Button>
+            </Link>
           </div>
 
-          {/* Headline + animated word */}
-          <div className="flex gap-5 flex-col">
-            <h1 className="font-display text-5xl md:text-7xl max-w-2xl tracking-tight text-center font-semibold leading-[1.05]">
-              <span className="text-[#FAFAF9]">NC&apos;s diaspora temples,</span>
-              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1">
+          {/* Headline */}
+          <div className="flex flex-col gap-[23px] items-center">
+            <h1
+              className="font-display text-center font-bold text-[#FAFAF9]"
+              style={{
+                fontSize: "clamp(3rem, 7vw, 63px)",
+                lineHeight: 0.91,
+                letterSpacing: "-0.63px",
+              }}
+            >
+              NC&apos;s diaspora temples,
+              <span className="relative flex w-full justify-center overflow-hidden text-center mt-3 pb-2">
                 &nbsp;
                 {titles.map((title, index) => (
                   <motion.span
                     key={index}
-                    className="absolute font-semibold text-[#F59E0B]"
+                    className="absolute font-bold"
+                    style={{ color: "#F59E0B" }}
                     initial={{ opacity: 0, y: "-100%" }}
                     transition={{ type: "spring", stiffness: 50 }}
                     animate={
                       titleNumber === index
                         ? { y: 0, opacity: 1 }
-                        : {
-                            y: titleNumber > index ? -150 : 150,
-                            opacity: 0,
-                          }
+                        : { y: titleNumber > index ? -150 : 150, opacity: 0 }
                     }
                   >
                     {title}.
@@ -63,7 +72,10 @@ function Hero() {
               </span>
             </h1>
 
-            <p className="font-body text-lg md:text-xl leading-relaxed tracking-tight text-[#78716C] max-w-2xl text-center">
+            <p
+              className="max-w-2xl text-center text-[#A8A29E]"
+              style={{ fontSize: "17px", lineHeight: 1.61 }}
+            >
               Deepam uses public signals and a hidden Markov model to identify
               Hindu diaspora temples in North Carolina that may benefit from
               increased community support, before they are forced into ritual
@@ -73,16 +85,12 @@ function Hero() {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button size="lg" className="gap-3 font-body" variant="outline" asChild>
-              <Link href="/about">
-                How it works <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
-            <Button size="lg" className="gap-3 font-body" asChild>
-              <Link href="/temples">
-                Explore temples <MoveRight className="w-4 h-4" />
-              </Link>
-            </Button>
+            <Link href="/about" className="btn-ghost">
+              How it works <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link href="/temples" className="btn-primary">
+              Explore temples <MoveRight className="w-4 h-4" />
+            </Link>
           </div>
 
         </div>

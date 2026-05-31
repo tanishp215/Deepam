@@ -3,12 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { List, X, MapPin } from "@phosphor-icons/react";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/temples", label: "Explore Temples" },
-  { href: "/about", label: "About Deepam" },
+  { href: "/",        label: "Home"    },
+  { href: "/temples", label: "Explore" },
+  { href: "/about",   label: "About"   },
 ];
 
 export default function Navigation() {
@@ -17,14 +16,12 @@ export default function Navigation() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   return (
     <>
@@ -34,107 +31,72 @@ export default function Navigation() {
             ? "bg-[#0D0A07]/90 backdrop-blur-md border-b border-[rgba(249,115,22,0.12)]"
             : "bg-transparent"
         }`}
-        style={{ height: "64px" }}
+        style={{ height: "68px" }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 group cursor-pointer"
-          >
-            {/* Deepam lamp icon */}
-            <div className="relative w-8 h-8 flex items-center justify-center">
-              <div
-                className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]"
-                style={{
-                  boxShadow:
-                    "0 0 8px rgba(245,158,11,0.8), 0 0 20px rgba(245,158,11,0.4), 0 0 40px rgba(245,158,11,0.15)",
-                }}
-              />
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{
-                  background:
-                    "radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)",
-                }}
-              />
-            </div>
-            <span className="font-display text-xl font-semibold tracking-tight text-[#FAFAF9] group-hover:text-[#FCD34D] transition-colors duration-200">
-              Deepam
-            </span>
+        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+          <Link href="/" className="font-display text-xl font-bold text-[#FAFAF9] tracking-tight">
+            Deepam
           </Link>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer ${
-                  pathname === link.href
-                    ? "text-[#F97316] bg-[rgba(249,115,22,0.08)]"
-                    : "text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[rgba(255,255,255,0.04)]"
-                }`}
+                className="transition-colors duration-200 hover:text-[#F97316]"
+                style={{
+                  fontSize: "17px",
+                  fontWeight: 400,
+                  color: pathname === link.href ? "#F97316" : "#A8A29E",
+                  padding: "13px 34px 13px 0",
+                }}
               >
                 {link.label}
               </Link>
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/temples"
-              className="btn-saffron flex items-center gap-2 cursor-pointer"
-            >
-              <MapPin weight="fill" size={14} />
+          <div className="hidden md:flex">
+            <Link href="/temples" className="btn-primary">
               Find Temples
             </Link>
           </div>
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 rounded-lg text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[rgba(255,255,255,0.06)] transition-colors cursor-pointer"
+            className="md:hidden p-2 text-[#A8A29E] hover:text-[#FAFAF9] transition-colors"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
-            {menuOpen ? <X size={22} weight="bold" /> : <List size={22} weight="bold" />}
+            {menuOpen ? (
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M3 3l16 16M19 3L3 19" />
+              </svg>
+            ) : (
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M3 6h16M3 11h16M3 16h16" />
+              </svg>
+            )}
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu */}
       {menuOpen && (
-        <div
-          className="fixed inset-0 z-40 md:hidden"
-          style={{ top: "64px" }}
-        >
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-[#0D0A07]/95 backdrop-blur-md"
-            onClick={() => setMenuOpen(false)}
-          />
-          {/* Menu content */}
-          <div className="relative z-10 flex flex-col p-6 gap-2">
+        <div className="fixed inset-0 z-40 md:hidden" style={{ top: "68px" }}>
+          <div className="absolute inset-0 bg-[#0D0A07]/95 backdrop-blur-md" onClick={() => setMenuOpen(false)} />
+          <div className="relative z-10 flex flex-col px-6 border-t border-[rgba(249,115,22,0.1)]">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-3.5 rounded-xl text-base font-medium transition-all duration-200 cursor-pointer ${
-                  pathname === link.href
-                    ? "text-[#F97316] bg-[rgba(249,115,22,0.1)]"
-                    : "text-[#D6D3D1] hover:text-[#FAFAF9] hover:bg-[rgba(255,255,255,0.04)]"
-                }`}
+                className="py-4 border-b border-[rgba(249,115,22,0.08)] text-[#FAFAF9] font-medium hover:text-[#F97316] transition-colors"
+                style={{ fontSize: "17px" }}
+                onClick={() => setMenuOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="mt-4">
-              <Link
-                href="/temples"
-                className="btn-saffron flex items-center justify-center gap-2 w-full cursor-pointer"
-              >
-                <MapPin weight="fill" size={14} />
+            <div className="pt-6">
+              <Link href="/temples" className="btn-primary w-full justify-center">
                 Find Temples
               </Link>
             </div>
