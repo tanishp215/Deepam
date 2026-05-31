@@ -1,5 +1,6 @@
 "use client";
 
+import "leaflet/dist/leaflet.css";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { type Temple, STATE_COLORS, STATE_LABELS } from "@/data/temples";

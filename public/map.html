@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deepam - NC Temple Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0D0A07; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    #map { width: 100%; height: 100vh; }
+
+    .leaflet-container { background: #0D0A07 !important; }
+
+    .leaflet-popup-content-wrapper {
+      background: #1A1410 !important;
+      border: 1px solid rgba(249, 115, 22, 0.2) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6) !important;
+      color: #FAFAF9 !important;
+    }
+    .leaflet-popup-tip { background: #1A1410 !important; }
+    .leaflet-popup-close-button { color: #78716C !important; }
+    .leaflet-popup-close-button:hover { color: #F97316 !important; }
+    .leaflet-control-zoom a {
+      background: #1A1410 !important;
+      color: #D6D3D1 !important;
+      border-color: rgba(249,115,22,0.2) !important;
+    }
+    .leaflet-control-zoom a:hover {
+      background: #241D16 !important;
+      color: #F97316 !important;
+    }
+    .leaflet-control-attribution {
+      background: rgba(13,10,7,0.8) !important;
+      color: #57534E !important;
+      font-size: 10px !important;
+    }
+
+    /* Legend */
+    #legend {
+      position: absolute;
+      bottom: 24px;
+      right: 12px;
+      z-index: 1000;
+      background: rgba(13,10,7,0.92);
+      border: 1px solid rgba(249,115,22,0.15);
+      border-radius: 12px;
+      padding: 14px 16px;
+      backdrop-filter: blur(8px);
+    }
+    #legend p.title {
+      font-size: 10px;
+      font-weight: 600;
+      color: #57534E;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 3px 0;
+    }
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .legend-label { font-size: 12px; color: #A8A29E; }
+
+    /* Back link */
+    #back {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      background: rgba(13,10,7,0.9);
+      border: 1px solid rgba(249,115,22,0.2);
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: #D6D3D1;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    #back:hover { border-color: rgba(249,115,22,0.5); color: #F97316; }
+
+    /* Popup inner */
+    .popup-state {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .popup-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .popup-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #FAFAF9;
+      margin-bottom: 4px;
+      line-height: 1.25;
+    }
+    .popup-meta { font-size: 12px; color: #A8A29E; margin-bottom: 10px; }
+    .popup-link {
+      display: inline-block;
+      background: linear-gradient(135deg, #F97316, #EA580C);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <a id="back" href="/">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Deepam
+  </a>
+
+  <div id="legend">
+    <p class="title">Temple State</p>
+    <div class="legend-row">
+      <div class="legend-dot" style="background:#FCD34D;box-shadow:0 0 5px #FCD34D;"></div>
+      <span class="legend-label">Sustaining</span>
+    </div>
+    <div class="legend-row">
+      <div class="legend-dot" style="background:#F97316;box-shadow:0 0 5px #F97316;"></div>
+      <span class="legend-label">Quietly Tightening</span>
+    </div>
+    <div class="legend-row">
+      <div class="legend-dot" style="background:#EF4444;box-shadow:0 0 5px #EF4444;"></div>
+      <span class="legend-label">Visibly Cutting Back</span>
+    </div>
+    <div class="legend-row">
+      <div class="legend-dot" style="background:#991B1B;box-shadow:0 0 4px #991B1B;"></div>
+      <span class="legend-label">Operating at Minimum</span>
+    </div>
+    <div class="legend-row">
+      <div class="legend-dot" style="background:#57534E;"></div>
+      <span class="legend-label">Insufficient Evidence</span>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const STATE_COLORS = {
+      "sustaining":              "#FCD34D",
+      "lightly-compromising":    "#F97316",
+      "seriously-compromising":  "#EF4444",
+      "stripped-down":           "#991B1B",
+      "insufficient-evidence":   "#57534E",
+      "pre-operational":         "#374151",
+    };
+    const STATE_LABELS = {
+      "sustaining":              "Sustaining",
+      "lightly-compromising":    "Quietly Tightening",
+      "seriously-compromising":  "Visibly Cutting Back",
+      "stripped-down":           "Operating at Minimum",
+      "insufficient-evidence":   "Insufficient Evidence",
+      "pre-operational":         "Pre-operational",
+    };
+
+    const map = L.map("map", {
+      center: [35.5, -79.3],
+      zoom: 7,
+      zoomControl: true,
+      scrollWheelZoom: true,
+    });
+
+    L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+      {
+        attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+        subdomains: "abcd",
+        maxZoom: 19,
+      }
+    ).addTo(map);
+
+    fetch("/api/temples")
+      .then((r) => r.json())
+      .then((temples) => {
+        temples.forEach((t) => {
+          const color = STATE_COLORS[t.deepamState] || "#57534E";
+          const label = STATE_LABELS[t.deepamState] || t.deepamState;
+
+          // Outer glow ring
+          L.circleMarker(t.coordinates, {
+            radius: 13,
+            fillColor: color,
+            fillOpacity: 0.12,
+            color: color,
+            opacity: 0.25,
+            weight: 1,
+            interactive: false,
+          }).addTo(map);
+
+          // Core marker
+          const marker = L.circleMarker(t.coordinates, {
+            radius: 7,
+            fillColor: color,
+            fillOpacity: 0.92,
+            color: color,
+            opacity: 1,
+            weight: 1.5,
+          }).addTo(map);
+
+          marker.bindPopup(
+            `<div style="padding:4px 2px;min-width:200px;">
+              <div class="popup-state">
+                <div class="popup-dot" style="background:${color};box-shadow:0 0 6px ${color};"></div>
+                <span style="color:${color};">${label}</span>
+              </div>
+              <div class="popup-name">${t.name}</div>
+              <div class="popup-meta">${t.city}, NC &middot; ${t.tradition}</div>
+              <a class="popup-link" href="/temples/${t.id}">View profile</a>
+            </div>`,
+            { maxWidth: 260 }
+          );
+
+          marker.on("click", () =>
+            map.setView(t.coordinates, Math.max(map.getZoom(), 9), { animate: true })
+          );
+          marker.on("mouseover", () => marker.setStyle({ fillOpacity: 1, weight: 2.5 }));
+          marker.on("mouseout",  () => marker.setStyle({ fillOpacity: 0.92, weight: 1.5 }));
+        });
+      })
+      .catch((err) => console.error("Failed to load temple data:", err));
+  </script>
+</body>
+</html>

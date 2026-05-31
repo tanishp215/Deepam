@@ -1,0 +1,16 @@
+# Deepam - Python signal collection dependencies
+# Run: pip install -r scripts/requirements.txt
+
+# HTTP / scraping
+requests>=2.32.0
+beautifulsoup4>=4.12.0
+pytrends>=4.9.2       # Google Trends unofficial API
+
+# Data handling
+pandas>=2.2.0
+
+# Optional: Google Maps Places API (requires API key in .env)
+# googlemaps>=4.10.0
+
+# Rate-limiting helper
+ratelimit>=2.2.1
