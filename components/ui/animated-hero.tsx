@@ -20,12 +20,31 @@ function Hero() {
 
   return (
     <div className="w-full min-h-[100dvh] bg-[#0D0A07] flex items-center relative overflow-hidden">
-      {/* Ambient glow */}
+      {/* Mid-field ambient warmth */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] pointer-events-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse, rgba(249,115,22,0.055) 0%, transparent 70%)",
-          filter: "blur(80px)",
+          background: "radial-gradient(ellipse, rgba(249,115,22,0.045) 0%, transparent 68%)",
+          filter: "blur(90px)",
+        }}
+      />
+      {/* Diya flame reference — warm column rising from the base */}
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none"
+        style={{
+          width: "320px",
+          height: "280px",
+          background: "radial-gradient(ellipse at bottom, rgba(249,115,22,0.14) 0%, rgba(245,158,11,0.07) 45%, transparent 72%)",
+          filter: "blur(28px)",
+        }}
+      />
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none"
+        style={{
+          width: "2px",
+          height: "160px",
+          background: "linear-gradient(to top, rgba(249,115,22,0.5), transparent)",
+          filter: "blur(1px)",
         }}
       />
 
