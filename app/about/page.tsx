@@ -2,7 +2,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import StateIndicator from "@/components/StateIndicator";
 import Link from "next/link";
-import { ArrowRight, Envelope } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, Mail } from "lucide-react";
 
 export const metadata = {
   title: "About Deepam — Methodology and Community",
@@ -319,7 +319,7 @@ export default function AboutPage() {
                   href="mailto:tanishchess@gmail.com?subject=Deepam Tier 2 Partnership"
                   className="btn-saffron inline-flex items-center gap-2 cursor-pointer text-sm"
                 >
-                  <Envelope size={14} weight="fill" />
+                  <Mail size={14} strokeWidth={1.75} />
                   Inquire about partnership
                 </a>
               </div>
@@ -340,7 +340,7 @@ export default function AboutPage() {
                   href="mailto:tanishchess@gmail.com?subject=Deepam Removal Request"
                   className="btn-ghost inline-flex items-center gap-2 cursor-pointer text-sm"
                 >
-                  <Envelope size={14} weight="fill" />
+                  <Mail size={14} strokeWidth={1.75} />
                   Request removal
                 </a>
               </div>

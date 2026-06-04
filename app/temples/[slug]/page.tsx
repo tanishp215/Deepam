@@ -18,10 +18,10 @@ import {
   Globe,
   Calendar,
   ArrowLeft,
-  Warning,
+  AlertTriangle,
   Info,
-  HandHeart,
-} from "@phosphor-icons/react/dist/ssr";
+  HeartHandshake,
+} from "lucide-react";
 import { prisma } from "@/lib/db";
 
 export async function generateStaticParams() {
@@ -138,7 +138,7 @@ export default async function TempleDetailPage({
                   <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
                     <MapPin
                       size={16}
-                      weight="fill"
+                      strokeWidth={1.75}
                       className="text-[#F97316] flex-shrink-0 mt-0.5"
                     />
                     <div>
@@ -154,7 +154,7 @@ export default async function TempleDetailPage({
                   <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
                     <Info
                       size={16}
-                      weight="fill"
+                      strokeWidth={1.75}
                       className="text-[#F97316] flex-shrink-0 mt-0.5"
                     />
                     <div>
@@ -169,7 +169,7 @@ export default async function TempleDetailPage({
                     <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
                       <Phone
                         size={16}
-                        weight="fill"
+                        strokeWidth={1.75}
                         className="text-[#F97316] flex-shrink-0 mt-0.5"
                       />
                       <div>
@@ -190,7 +190,7 @@ export default async function TempleDetailPage({
                     <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
                       <Globe
                         size={16}
-                        weight="fill"
+                        strokeWidth={1.75}
                         className="text-[#F97316] flex-shrink-0 mt-0.5"
                       />
                       <div>
@@ -216,7 +216,7 @@ export default async function TempleDetailPage({
                   <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
                     <Calendar
                       size={16}
-                      weight="fill"
+                      strokeWidth={1.75}
                       className="text-[#F97316] flex-shrink-0 mt-0.5"
                     />
                     <div>
@@ -233,7 +233,7 @@ export default async function TempleDetailPage({
                     <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
                       <Info
                         size={16}
-                        weight="fill"
+                        strokeWidth={1.75}
                         className="text-[#F97316] flex-shrink-0 mt-0.5"
                       />
                       <div>
@@ -275,9 +275,9 @@ export default async function TempleDetailPage({
 
                 {!temple.hasSufficientEvidence && (
                   <div className="flex items-start gap-3 bg-[rgba(87,83,78,0.15)] border border-[rgba(87,83,78,0.2)] rounded-lg p-3">
-                    <Warning
+                    <AlertTriangle
                       size={16}
-                      weight="fill"
+                      strokeWidth={1.75}
                       className="text-[#78716C] flex-shrink-0 mt-0.5"
                     />
                     <p className="text-xs text-[#78716C] leading-relaxed">
@@ -373,9 +373,9 @@ export default async function TempleDetailPage({
                   </div>
                 ) : (
                   <div className="text-center py-6 border border-dashed border-[rgba(249,115,22,0.1)] rounded-lg">
-                    <HandHeart
+                    <HeartHandshake
                       size={24}
-                      weight="fill"
+                      strokeWidth={1.75}
                       className="mx-auto mb-2 text-[#57534E]"
                     />
                     <p className="text-xs text-[#57534E]">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { HandHeart, CheckCircle, Warning } from "@phosphor-icons/react";
+import { HeartHandshake, CheckCircle2, AlertTriangle } from "lucide-react";
 
 interface PledgeFormProps {
   templeId: string;
@@ -53,7 +53,7 @@ export default function PledgeForm({
           className="w-14 h-14 rounded-full flex items-center justify-center"
           style={{ background: "rgba(245,158,11,0.12)" }}
         >
-          <CheckCircle size={28} weight="fill" className="text-[#F59E0B]" />
+          <CheckCircle2 size={28} strokeWidth={1.75} className="text-[#F59E0B]" />
         </div>
         <div>
           <p className="font-display text-xl font-semibold text-[#FAFAF9] mb-1">
@@ -75,7 +75,7 @@ export default function PledgeForm({
           className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
           style={{ background: "rgba(249,115,22,0.1)" }}
         >
-          <HandHeart size={20} weight="fill" className="text-[#F97316]" />
+          <HeartHandshake size={20} strokeWidth={1.75} className="text-[#F97316]" />
         </div>
         <div>
           <p className="text-sm font-semibold text-[#FAFAF9]">
@@ -152,7 +152,7 @@ export default function PledgeForm({
           className="flex items-center gap-2 text-xs text-[#EF4444] bg-[rgba(239,68,68,0.08)] border border-[rgba(239,68,68,0.15)] rounded-lg px-3 py-2"
           role="alert"
         >
-          <Warning size={14} weight="fill" />
+          <AlertTriangle size={14} strokeWidth={1.75} />
           {error}
         </div>
       )}
@@ -160,7 +160,7 @@ export default function PledgeForm({
       <button
         type="submit"
         disabled={loading}
-        className="btn-saffron w-full justify-center flex items-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+        className="btn-primary w-full justify-center flex items-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? (
           <>
@@ -169,7 +169,7 @@ export default function PledgeForm({
           </>
         ) : (
           <>
-            <HandHeart size={16} weight="fill" />
+            <HeartHandshake size={16} strokeWidth={1.75} />
             Pledge to attend
           </>
         )}

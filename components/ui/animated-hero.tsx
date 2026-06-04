@@ -20,38 +20,36 @@ function Hero() {
 
   return (
     <div className="w-full min-h-[100dvh] bg-[#0D0A07] flex items-center relative overflow-hidden">
-      {/* Subtle ambient glow */}
+      {/* Ambient glow */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] pointer-events-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse, rgba(249,115,22,0.07) 0%, transparent 70%)",
-          filter: "blur(60px)",
+          background: "radial-gradient(ellipse, rgba(249,115,22,0.055) 0%, transparent 70%)",
+          filter: "blur(80px)",
         }}
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
-        <div className="flex flex-col items-center justify-center gap-[23px] py-[119px]">
+        <div className="flex flex-col items-center justify-center gap-8 py-32">
 
           {/* Badge */}
-          <div>
-            <Link href="/about" className="btn-ghost gap-3" style={{ fontSize: "15px" }}>
-              A probabilistic framework for diaspora temples
-              <MoveRight className="w-4 h-4" />
-            </Link>
-          </div>
+          <Link href="/about" className="btn-ghost gap-3" style={{ fontSize: "14px", padding: "10px 20px" }}>
+            A probabilistic framework for diaspora temples
+            <MoveRight size={14} strokeWidth={1.75} />
+          </Link>
 
           {/* Headline */}
-          <div className="flex flex-col gap-[23px] items-center">
+          <div className="flex flex-col gap-6 items-center">
             <h1
               className="font-display text-center font-bold text-[#FAFAF9]"
               style={{
-                fontSize: "clamp(3rem, 7vw, 63px)",
-                lineHeight: 0.91,
-                letterSpacing: "-0.63px",
+                fontSize: "clamp(2.75rem, 6.5vw, 60px)",
+                lineHeight: 1.0,
+                letterSpacing: "-0.025em",
               }}
             >
               NC&apos;s diaspora temples,
-              <span className="relative flex w-full justify-center overflow-hidden text-center mt-3 pb-2">
+              <span className="relative flex w-full justify-center overflow-hidden text-center mt-3 pb-3">
                 &nbsp;
                 {titles.map((title, index) => (
                   <motion.span
@@ -73,23 +71,22 @@ function Hero() {
             </h1>
 
             <p
-              className="max-w-2xl text-center text-[#A8A29E]"
-              style={{ fontSize: "17px", lineHeight: 1.61 }}
+              className="max-w-lg text-center text-[#78716C]"
+              style={{ fontSize: "16px", lineHeight: 1.7 }}
             >
-              Deepam uses public signals and a hidden Markov model to identify
-              Hindu diaspora temples in North Carolina that may benefit from
-              increased community support, before they are forced into ritual
-              concessions.
+              Public signals and a hidden Markov model, identifying Hindu diaspora
+              temples in North Carolina that may benefit from community support
+              before ritual concessions begin.
             </p>
           </div>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Link href="/about" className="btn-ghost">
-              How it works <ArrowRight className="w-4 h-4" />
+              How it works <ArrowRight size={14} strokeWidth={1.75} />
             </Link>
             <Link href="/temples" className="btn-primary">
-              Explore temples <MoveRight className="w-4 h-4" />
+              Explore temples <MoveRight size={14} strokeWidth={1.75} />
             </Link>
           </div>
 

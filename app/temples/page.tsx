@@ -15,7 +15,7 @@ import {
   STATE_LABELS,
   STATE_COLORS,
 } from "@/data/temples";
-import { MagnifyingGlass, X, MapTrifold, List } from "@phosphor-icons/react";
+import { Search, X, Map, LayoutList } from "lucide-react";
 import { Suspense } from "react";
 
 const ALL_REGIONS: Array<{ value: Region | "all"; label: string }> = [
@@ -97,9 +97,9 @@ function TemplesContent() {
             <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
               {/* Search */}
               <div className="relative flex-1 min-w-0 max-w-sm">
-                <MagnifyingGlass
+                <Search
                   size={14}
-                  weight="bold"
+                  strokeWidth={2}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#57534E] pointer-events-none"
                 />
                 <input
@@ -154,7 +154,7 @@ function TemplesContent() {
                   }}
                   className="flex items-center gap-1.5 text-xs text-[#78716C] hover:text-[#F97316] transition-colors cursor-pointer whitespace-nowrap"
                 >
-                  <X size={12} weight="bold" />
+                  <X size={12} strokeWidth={2} />
                   Clear filters
                 </button>
               )}
@@ -170,7 +170,7 @@ function TemplesContent() {
                   }`}
                   aria-label="List view"
                 >
-                  <List size={16} weight="bold" />
+                  <LayoutList size={16} strokeWidth={2} />
                 </button>
                 <button
                   onClick={() => setView("map")}
@@ -181,7 +181,7 @@ function TemplesContent() {
                   }`}
                   aria-label="Map view"
                 >
-                  <MapTrifold size={16} weight="bold" />
+                  <Map size={16} strokeWidth={2} />
                 </button>
               </div>
             </div>
@@ -209,7 +209,7 @@ function TemplesContent() {
                 className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
                 style={{ background: "rgba(87,83,78,0.15)" }}
               >
-                <MagnifyingGlass size={22} className="text-[#57534E]" />
+                <Search size={22} className="text-[#57534E]" />
               </div>
               <p className="text-[#78716C] font-body">
                 No temples found for your filters.

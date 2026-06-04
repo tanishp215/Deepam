@@ -25,8 +25,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["system-ui", "-apple-system", "BlinkMacSystemFont", '"Segoe UI"', "sans-serif"],
-        body:    ["system-ui", "-apple-system", "BlinkMacSystemFont", '"Segoe UI"', "sans-serif"],
+        display: ["var(--font-outfit)", "system-ui", "-apple-system", "BlinkMacSystemFont", '"Segoe UI"', "sans-serif"],
+        body:    ["var(--font-outfit)", "system-ui", "-apple-system", "BlinkMacSystemFont", '"Segoe UI"', "sans-serif"],
       },
       fontSize: {
         "body-sm":    ["17px", { lineHeight: "1.61", letterSpacing: "0.01px" }],
@@ -37,7 +37,7 @@ const config: Config = {
         display:      ["clamp(80px,12vw,187px)", { lineHeight: "0.8", letterSpacing: "-3.74px" }],
       },
       borderRadius: {
-        "4xl":  "45px",
+        "4xl":  "14px",
         "full": "1000px",
       },
       spacing: {
@@ -60,6 +60,13 @@ const config: Config = {
       },
       animation: {
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        spotlight: "spotlight 2s ease 0.75s 1 forwards",
+      },
+      keyframes: {
+        spotlight: {
+          "0%":   { opacity: "0", transform: "translate(-72%, -62%) scale(0.5)" },
+          "100%": { opacity: "1", transform: "translate(-50%, -40%) scale(1)" },
+        },
       },
     },
   },
