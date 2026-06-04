@@ -7,10 +7,10 @@ const NCMap = dynamic(() => import("@/components/NCMap"), {
   ssr: false,
   loading: () => (
     <div
-      className="w-full rounded-[45px] bg-[#000d10] animate-pulse flex items-center justify-center"
+      className="w-full rounded-xl bg-[#0D0A07] animate-pulse flex items-center justify-center"
       style={{ height: "var(--map-height, 500px)" }}
     >
-      <p className="text-[17px] text-[#8e8e95]">Loading map...</p>
+      <p className="text-[13px] text-[#57534E] tracking-wide">Loading map</p>
     </div>
   ),
 });

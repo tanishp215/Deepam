@@ -5,145 +5,153 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { type Temple, STATE_COLORS, STATE_LABELS } from "@/data/temples";
 
+const STATE_TEXT: Record<string, string> = {
+  sustaining:               "#6EE7B7",
+  "lightly-compromising":   "#FCD34D",
+  "seriously-compromising": "#FDBA74",
+  "stripped-down":          "#FCA5A5",
+  "insufficient-evidence":  "#A8A29E",
+  "pre-operational":        "#9CA3AF",
+};
+
 interface NCMapProps {
   temples: Temple[];
   selectedId?: string;
+  onSelect?: (id: string | null) => void;
   height?: string;
 }
 
-export default function NCMap({
-  temples,
-  selectedId,
-  height = "500px",
-}: NCMapProps) {
+function buildMarkerHtml(color: string, state: string, isSelected: boolean): string {
+  const coreSize = isSelected ? 14 : 11;
+  const wrapSize = isSelected ? 36 : 28;
+  const pulseSize = wrapSize;
+  const isPulsing = state === "sustaining";
+
+  return `
+    <div class="deepam-marker-wrap ${isSelected ? "deepam-marker-selected" : ""}" style="width:${wrapSize}px;height:${wrapSize}px;">
+      ${isPulsing ? `<span class="deepam-marker-pulse" style="width:${pulseSize}px;height:${pulseSize}px;background:${color};"></span>` : ""}
+      <span class="deepam-marker-core" style="width:${coreSize}px;height:${coreSize}px;background:${color};"></span>
+    </div>
+  `;
+}
+
+function buildPopupHtml(temple: Temple): string {
+  const color = STATE_COLORS[temple.deepamState];
+  const textColor = STATE_TEXT[temple.deepamState] ?? "#A8A29E";
+  return `
+    <div style="padding:14px 14px 14px;min-width:210px;font-family:system-ui,sans-serif;">
+      <div style="display:inline-flex;align-items:center;gap:5px;background:${color}14;border:1px solid ${color}2a;border-radius:4px;padding:3px 8px;margin-bottom:10px;">
+        <span style="width:5px;height:5px;border-radius:50%;background:${color};flex-shrink:0;"></span>
+        <span style="font-size:11px;font-weight:600;color:${textColor};letter-spacing:0.04em;">${STATE_LABELS[temple.deepamState]}</span>
+      </div>
+      <div style="font-size:15px;font-weight:700;color:#FAFAF9;margin-bottom:3px;line-height:1.2;letter-spacing:-0.015em;">
+        ${temple.name}
+      </div>
+      <div style="font-size:12px;color:#78716C;margin-bottom:12px;">
+        ${temple.city}, NC &middot; ${temple.tradition}
+      </div>
+      <a href="/temples/${temple.id}" style="
+        display:inline-flex;align-items:center;gap:5px;
+        background:#F97316;color:#fff;
+        font-size:13px;font-weight:600;
+        padding:7px 14px;border-radius:6px;
+        text-decoration:none;letter-spacing:0.005em;
+        box-shadow:inset 0 1px 0 rgba(255,255,255,0.12),0 1px 3px rgba(0,0,0,0.3);
+      ">View profile</a>
+    </div>
+  `;
+}
+
+export default function NCMap({ temples, selectedId, onSelect, height = "500px" }: NCMapProps) {
   const router = useRouter();
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<import("leaflet").Map | null>(null);
-  const markersRef = useRef<import("leaflet").CircleMarker[]>([]);
+  const markersRef = useRef<import("leaflet").Marker[]>([]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !mapRef.current) return;
-
     let isMounted = true;
 
     import("leaflet").then((L) => {
       if (!isMounted || !mapRef.current) return;
 
-      // Destroy existing map
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
+        markersRef.current = [];
       }
 
-      // Create map centered on North Carolina
       const map = L.map(mapRef.current, {
         center: [35.5, -79.3],
         zoom: 7,
-        zoomControl: true,
+        zoomControl: false,
         scrollWheelZoom: true,
         attributionControl: true,
+        minZoom: 6,
+        maxZoom: 16,
       });
 
       mapInstanceRef.current = map;
 
-      // Dark tile layer (CartoDB DarkMatter)
+      L.control.zoom({ position: "bottomleft" }).addTo(map);
+
       L.tileLayer(
         "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
         {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
           subdomains: "abcd",
           maxZoom: 19,
         }
       ).addTo(map);
 
-      // Add temple markers
       temples.forEach((temple) => {
-        const color = STATE_COLORS[temple.deepamState];
+        const color  = STATE_COLORS[temple.deepamState];
         const isSelected = temple.id === selectedId;
-        const radius = isSelected ? 10 : 7;
+        const wrapSize = isSelected ? 36 : 28;
 
-        const outerMarker = L.circleMarker(temple.coordinates, {
-          radius: radius + 6,
-          fillColor: color,
-          fillOpacity: 0.15,
-          color: color,
-          opacity: 0.3,
-          weight: 1,
-          interactive: false,
-        }).addTo(map);
+        const icon = L.divIcon({
+          html: buildMarkerHtml(color, temple.deepamState, isSelected),
+          className: "",
+          iconSize:   [wrapSize, wrapSize],
+          iconAnchor: [wrapSize / 2, wrapSize / 2],
+          tooltipAnchor: [0, -(wrapSize / 2) - 2],
+          popupAnchor: [0, -(wrapSize / 2) - 4],
+        });
 
-        const marker = L.circleMarker(temple.coordinates, {
-          radius,
-          fillColor: color,
-          fillOpacity: isSelected ? 1 : 0.9,
-          color: isSelected ? "#FAFAF9" : color,
-          opacity: 1,
-          weight: isSelected ? 2 : 1.5,
-          className: `temple-marker ${isSelected ? "selected" : ""}`,
-        }).addTo(map);
-
+        const marker = L.marker(temple.coordinates, { icon }).addTo(map);
         markersRef.current.push(marker);
 
-        // Popup
-        const popupContent = `
-          <div style="padding:6px 2px;min-width:210px;font-family:system-ui,sans-serif;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-              <span style="
-                display:inline-block;width:8px;height:8px;
-                border-radius:50%;background:${color};
-                box-shadow:0 0 8px ${color};flex-shrink:0;
-              "></span>
-              <span style="font-size:11px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.06em;">
-                ${STATE_LABELS[temple.deepamState]}
-              </span>
-            </div>
-            <h3 style="font-size:17px;font-weight:700;color:#000d10;margin-bottom:4px;line-height:1.2;">
-              ${temple.name}
-            </h3>
-            <p style="font-size:14px;color:#8e8e95;margin-bottom:10px;">
-              ${temple.city}, NC &middot; ${temple.tradition}
-            </p>
-            <a href="/temples/${temple.id}" style="
-              display:inline-block;background:#F97316;color:#fff;
-              font-size:14px;font-weight:700;padding:8px 18px;
-              border-radius:1000px;text-decoration:none;cursor:pointer;
-            ">View profile</a>
-          </div>
-        `;
-
-        marker.bindPopup(popupContent, {
-          closeButton: true,
-          className: "deepam-popup",
-          maxWidth: 260,
+        // Tooltip on hover
+        marker.bindTooltip(temple.shortName, {
+          permanent: false,
+          direction: "top",
+          offset: [0, -2],
+          className: "deepam-tooltip",
         });
 
+        // Click behavior
         marker.on("click", () => {
-          map.setView(temple.coordinates, Math.max(map.getZoom(), 9), {
-            animate: true,
-          });
-        });
-
-        // Hover glow
-        marker.on("mouseover", () => {
-          marker.setStyle({ fillOpacity: 1, weight: 2 });
-          outerMarker.setStyle({ fillOpacity: 0.25, opacity: 0.5 });
-        });
-        marker.on("mouseout", () => {
-          marker.setStyle({
-            fillOpacity: isSelected ? 1 : 0.9,
-            weight: isSelected ? 2 : 1.5,
-          });
-          outerMarker.setStyle({ fillOpacity: 0.15, opacity: 0.3 });
+          if (onSelect) {
+            onSelect(temple.id);
+            map.flyTo(temple.coordinates, Math.max(map.getZoom(), 10), {
+              animate: true,
+              duration: 0.6,
+            });
+          } else {
+            // Fallback: popup + zoom (non-hero usage)
+            marker.bindPopup(buildPopupHtml(temple), {
+              closeButton: true,
+              className: "deepam-popup",
+              maxWidth: 280,
+            }).openPopup();
+            map.setView(temple.coordinates, Math.max(map.getZoom(), 9), { animate: true });
+          }
         });
       });
 
-      // If a temple is selected, fly to it
       if (selectedId) {
-        const selected = temples.find((t) => t.id === selectedId);
-        if (selected) {
-          map.setView(selected.coordinates, 11, { animate: false });
-        }
+        const sel = temples.find((t) => t.id === selectedId);
+        if (sel) map.setView(sel.coordinates, 11, { animate: false });
       }
     });
 
@@ -155,40 +163,11 @@ export default function NCMap({
       }
       markersRef.current = [];
     };
-  }, [temples, selectedId]);
+  }, [temples, selectedId, onSelect, router]);
 
   return (
-    <div className="relative rounded-xl overflow-hidden" style={{ height }}>
+    <div className="relative overflow-hidden" style={{ height, borderRadius: "inherit" }}>
       <div ref={mapRef} className="absolute inset-0" />
-
-      {/* Map legend */}
-      <div className="absolute bottom-4 right-4 z-[1000] bg-[#0D0A07]/90 backdrop-blur-sm border border-[rgba(249,115,22,0.15)] rounded-xl p-3 text-xs">
-        <p className="text-[#57534E] font-semibold mb-2 font-body uppercase tracking-wider text-[10px]">
-          Temple State
-        </p>
-        {(
-          [
-            "sustaining",
-            "lightly-compromising",
-            "seriously-compromising",
-            "stripped-down",
-            "insufficient-evidence",
-          ] as const
-        ).map((state) => (
-          <div key={state} className="flex items-center gap-2 py-0.5">
-            <span
-              className="w-2 h-2 rounded-full flex-shrink-0"
-              style={{
-                background: STATE_COLORS[state],
-                boxShadow: `0 0 5px ${STATE_COLORS[state]}`,
-              }}
-            />
-            <span className="text-[#A8A29E] font-body">
-              {STATE_LABELS[state]}
-            </span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

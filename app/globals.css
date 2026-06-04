@@ -237,28 +237,102 @@
   }
 }
 
-/* ── Leaflet ── */
-.leaflet-container { background: #0D0A07 !important; font-family: system-ui !important; }
-.leaflet-popup-content-wrapper {
-  background: #1A1410 !important;
-  border: 1px solid rgba(249,115,22,0.2) !important;
-  border-radius: 16px !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
-  color: #FAFAF9 !important;
+/* ── Leaflet base ── */
+.leaflet-container { background: #0D0A07 !important; font-family: var(--font-outfit, system-ui) !important; }
+.leaflet-control-zoom {
+  border: 1px solid rgba(249,115,22,0.15) !important;
+  border-radius: 6px !important;
+  overflow: hidden;
+  box-shadow: none !important;
 }
-.leaflet-popup-tip { background: #1A1410 !important; }
-.leaflet-popup-close-button { color: #78716C !important; }
-.leaflet-popup-close-button:hover { color: #F97316 !important; }
 .leaflet-control-zoom a {
-  background: #1A1410 !important;
+  background: rgba(13,10,7,0.9) !important;
   color: #A8A29E !important;
-  border-color: rgba(249,115,22,0.2) !important;
+  border-color: rgba(249,115,22,0.12) !important;
+  backdrop-filter: blur(8px);
+  width: 28px !important;
+  height: 28px !important;
+  line-height: 28px !important;
+  font-size: 14px !important;
 }
-.leaflet-control-zoom a:hover { color: #F97316 !important; background: #241D16 !important; }
+.leaflet-control-zoom a:hover { color: #F97316 !important; background: rgba(13,10,7,0.95) !important; }
 .leaflet-control-attribution {
-  background: rgba(13,10,7,0.85) !important;
-  color: #78716C !important;
-  font-size: 10px !important;
+  background: rgba(13,10,7,0.7) !important;
+  color: #57534E !important;
+  font-size: 9px !important;
+  backdrop-filter: blur(8px);
+  border-radius: 4px 0 0 0 !important;
+}
+.leaflet-control-attribution a { color: #78716C !important; }
+
+/* ── Leaflet popups (used on non-hero map instances) ── */
+.deepam-popup .leaflet-popup-content-wrapper {
+  background: rgba(13,10,7,0.96) !important;
+  border: 1px solid rgba(249,115,22,0.2) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6) !important;
+  color: #FAFAF9 !important;
+  padding: 0 !important;
+  backdrop-filter: blur(12px);
+}
+.deepam-popup .leaflet-popup-content { margin: 0 !important; }
+.deepam-popup .leaflet-popup-tip-container { display: none; }
+.deepam-popup .leaflet-popup-close-button {
+  color: #57534E !important;
+  top: 10px !important;
+  right: 10px !important;
+  font-size: 16px !important;
+}
+.deepam-popup .leaflet-popup-close-button:hover { color: #A8A29E !important; }
+
+/* ── Deepam map markers (L.divIcon) ── */
+.deepam-marker-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.deepam-marker-pulse {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: marker-pulse 2.8s ease-out infinite;
+}
+.deepam-marker-core {
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.38);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  position: relative;
+  z-index: 1;
+  transition: transform 0.12s ease;
+}
+.deepam-marker-wrap:hover .deepam-marker-core {
+  transform: scale(1.35);
+}
+.deepam-marker-selected .deepam-marker-core {
+  border-color: rgba(255,255,255,0.75) !important;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.18), 0 2px 8px rgba(0,0,0,0.6) !important;
+  transform: scale(1.2);
+}
+
+/* ── Tooltip ── */
+.deepam-tooltip.leaflet-tooltip {
+  background: rgba(13,10,7,0.95) !important;
+  border: 1px solid rgba(249,115,22,0.2) !important;
+  border-radius: 5px !important;
+  color: #FAFAF9 !important;
+  font-family: var(--font-outfit, system-ui) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  padding: 4px 9px !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5) !important;
+  white-space: nowrap !important;
+  letter-spacing: -0.01em !important;
+  backdrop-filter: blur(8px);
+}
+.deepam-tooltip.leaflet-tooltip-top::before {
+  border-top-color: rgba(249,115,22,0.18) !important;
 }
 
 /* Spline loader spinner */
