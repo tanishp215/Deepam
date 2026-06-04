@@ -9,18 +9,27 @@ interface StateIndicatorProps {
 }
 
 const STATE_BG: Record<DeepamState, string> = {
-  "sustaining":             "rgba(245,158,11,0.15)",
-  "lightly-compromising":   "rgba(249,115,22,0.15)",
-  "seriously-compromising": "rgba(239,68,68,0.15)",
-  "stripped-down":          "rgba(127,29,29,0.2)",
-  "insufficient-evidence":  "rgba(120,113,108,0.15)",
-  "pre-operational":        "rgba(55,65,81,0.15)",
+  "sustaining":             "rgba(16,185,129,0.08)",
+  "lightly-compromising":   "rgba(245,158,11,0.1)",
+  "seriously-compromising": "rgba(249,115,22,0.1)",
+  "stripped-down":          "rgba(239,68,68,0.1)",
+  "insufficient-evidence":  "rgba(120,113,108,0.08)",
+  "pre-operational":        "rgba(55,65,81,0.08)",
+};
+
+const STATE_BORDER: Record<DeepamState, string> = {
+  "sustaining":             "rgba(16,185,129,0.22)",
+  "lightly-compromising":   "rgba(245,158,11,0.22)",
+  "seriously-compromising": "rgba(249,115,22,0.22)",
+  "stripped-down":          "rgba(239,68,68,0.25)",
+  "insufficient-evidence":  "rgba(120,113,108,0.18)",
+  "pre-operational":        "rgba(55,65,81,0.18)",
 };
 
 const STATE_TEXT: Record<DeepamState, string> = {
-  "sustaining":             "#FCD34D",
-  "lightly-compromising":   "#FB923C",
-  "seriously-compromising": "#F87171",
+  "sustaining":             "#6EE7B7",
+  "lightly-compromising":   "#FCD34D",
+  "seriously-compromising": "#FDBA74",
   "stripped-down":          "#FCA5A5",
   "insufficient-evidence":  "#A8A29E",
   "pre-operational":        "#9CA3AF",
@@ -32,18 +41,22 @@ export default function StateIndicator({
   showLabel = true,
   className,
 }: StateIndicatorProps) {
-  const color   = STATE_COLORS[state];
-  const textColor = STATE_TEXT[state];
-  const bg      = STATE_BG[state];
-  const label   = STATE_LABELS[state];
-  const dotSize = size === "sm" ? 6 : size === "lg" ? 12 : 8;
+  const color      = STATE_COLORS[state];
+  const textColor  = STATE_TEXT[state];
+  const bg         = STATE_BG[state];
+  const border     = STATE_BORDER[state];
+  const label      = STATE_LABELS[state];
+  const dotSize    = size === "sm" ? 5 : size === "lg" ? 10 : 7;
 
   return (
-    <div className={cn("state-badge", className)} style={{ background: bg, color: textColor }}>
+    <div
+      className={cn("state-badge", className)}
+      style={{ background: bg, color: textColor, border: `1px solid ${border}` }}
+    >
       <span className="relative flex-shrink-0" style={{ width: dotSize, height: dotSize }}>
         <span
           className="absolute inset-0 rounded-full"
-          style={{ background: color, boxShadow: `0 0 ${dotSize * 2}px ${color}80` }}
+          style={{ background: color }}
         />
         {state === "sustaining" && (
           <span
@@ -63,11 +76,11 @@ export function StateDot({ state, size = 10 }: { state: DeepamState; size?: numb
     <span className="relative inline-flex flex-shrink-0" style={{ width: size, height: size }}>
       <span
         className="absolute inset-0 rounded-full"
-        style={{ background: color, boxShadow: `0 0 ${size * 1.5}px ${color}60` }}
+        style={{ background: color }}
       />
       {state === "sustaining" && (
         <span
-          className="absolute inset-0 rounded-full animate-pulse-slow opacity-40"
+          className="absolute inset-0 rounded-full animate-pulse-slow opacity-35"
           style={{ background: color }}
         />
       )}

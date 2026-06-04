@@ -63,12 +63,12 @@ export const STATE_LABELS: Record<DeepamState, string> = {
 };
 
 export const STATE_COLORS: Record<DeepamState, string> = {
-  sustaining: "#F59E0B",
-  "lightly-compromising": "#F97316",
-  "seriously-compromising": "#EF4444",
-  "stripped-down": "#7F1D1D",
-  "insufficient-evidence": "#57534E",
-  "pre-operational": "#374151",
+  sustaining:               "#10B981",  // emerald  — thriving
+  "lightly-compromising":   "#F59E0B",  // amber    — watch
+  "seriously-compromising": "#F97316",  // orange   — warning
+  "stripped-down":          "#EF4444",  // red      — critical
+  "insufficient-evidence":  "#78716C",  // stone    — unknown
+  "pre-operational":        "#374151",  // gray
 };
 
 export const temples: Temple[] = [
