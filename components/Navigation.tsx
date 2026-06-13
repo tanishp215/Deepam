@@ -27,10 +27,10 @@ export default function Navigation() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-[1100] transition-all duration-300 ${
           scrolled
             ? "bg-[#0D0A07]/90 backdrop-blur-md border-b border-[rgba(249,115,22,0.12)]"
-            : "bg-transparent"
+            : "bg-gradient-to-b from-[rgba(13,10,7,0.72)] to-transparent backdrop-blur-[2px]"
         }`}
         style={{ height: "68px" }}
       >

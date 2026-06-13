@@ -81,13 +81,32 @@ function TemplesContent() {
 
       <main className="min-h-screen bg-[#0D0A07] pt-20 pb-24">
         {/* Page header */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-8">
-          <h1 className="font-display text-[clamp(2.2rem,5vw,3.5rem)] font-semibold text-[#FAFAF9] tracking-tight mb-2">
+        <div
+          className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-8 relative"
+          style={{
+            background:
+              "radial-gradient(ellipse 50% 160px at 0% 50%, rgba(249,115,22,0.05) 0%, transparent 70%)",
+          }}
+        >
+          <div className="flex items-center gap-2.5 mb-4">
+            <div
+              className="w-2 h-2 rounded-full flex-shrink-0"
+              style={{
+                background: "#F97316",
+                boxShadow: "0 0 6px rgba(249,115,22,0.9), 0 0 18px rgba(249,115,22,0.4)",
+              }}
+            />
+            <span className="text-[11px] font-semibold text-[#57534E] uppercase tracking-[0.12em]">
+              North Carolina
+            </span>
+          </div>
+          <h1 className="font-display text-[clamp(2.2rem,5vw,3.5rem)] font-bold text-[#FAFAF9] tracking-tight mb-2"
+            style={{ letterSpacing: "-0.03em", lineHeight: 1.05 }}>
             Explore NC temples
           </h1>
-          <p className="text-[#78716C] text-base max-w-xl">
+          <p className="text-[#78716C] text-base max-w-xl leading-relaxed">
             {temples.length} Hindu community institutions across North Carolina,
-            each tracked by Deepam's probabilistic state model.
+            each tracked by Deepam&apos;s probabilistic state model.
           </p>
         </div>
 

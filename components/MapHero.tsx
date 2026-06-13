@@ -106,7 +106,7 @@ export default function MapHero() {
       {/* ════════════════════════════════════
           TOP-LEFT — Branding + count
       ════════════════════════════════════ */}
-      <div className="absolute top-4 left-4 z-[1000] pointer-events-none select-none">
+      <div className="absolute top-[84px] left-4 z-[1000] pointer-events-none select-none">
         <p
           className="font-display font-bold text-[#FAFAF9]"
           style={{ fontSize: "clamp(1.1rem, 2vw, 22px)", lineHeight: 1.1, letterSpacing: "-0.025em" }}
@@ -123,7 +123,7 @@ export default function MapHero() {
       {/* ════════════════════════════════════
           TOP-RIGHT — Search + filters
       ════════════════════════════════════ */}
-      <div className="absolute top-4 right-4 z-[1000] flex flex-col items-end gap-2">
+      <div className="absolute top-[84px] right-4 z-[1000] flex flex-col items-end gap-2">
         {/* Search */}
         <div className="relative">
           <Search
@@ -360,10 +360,10 @@ export default function MapHero() {
 
       {/* Scroll hint — only shows when nothing is selected */}
       {!selectedTemple && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[999] pointer-events-none select-none">
-          <div className="flex flex-col items-center gap-1 opacity-30">
-            <p className="text-[9px] text-[#78716C] uppercase tracking-[0.15em]">scroll for more</p>
-            <div className="w-px h-4 bg-[rgba(249,115,22,0.4)]" />
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-[999] pointer-events-none select-none">
+          <div className="flex flex-col items-center gap-1.5" style={{ animation: "scroll-bounce 2.2s ease-in-out infinite" }}>
+            <p className="text-[10px] text-[#78716C] uppercase tracking-[0.14em] font-semibold">Scroll to explore</p>
+            <ChevronDown size={14} strokeWidth={2} className="text-[rgba(249,115,22,0.55)]" />
           </div>
         </div>
       )}
