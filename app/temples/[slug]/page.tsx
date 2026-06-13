@@ -76,15 +76,16 @@ export default async function TempleDetailPage({
     <>
       <Navigation />
 
-      <main className="min-h-screen bg-[#0D0A07] pt-20 pb-24">
+      <main className="min-h-screen bg-[#0D0A07] pt-[68px] pb-24">
         {/* Back nav */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 mb-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 mb-6">
           <Link
             href="/temples"
-            className="inline-flex items-center gap-2 text-sm text-[#78716C] hover:text-[#F97316] transition-colors cursor-pointer group"
+            className="inline-flex items-center gap-2 text-[13px] text-[#57534E] hover:text-[#F97316] transition-colors cursor-pointer group"
           >
             <ArrowLeft
-              size={14}
+              size={13}
+              strokeWidth={1.75}
               className="group-hover:-translate-x-0.5 transition-transform"
             />
             Back to all temples
@@ -110,7 +111,7 @@ export default async function TempleDetailPage({
                       size="md"
                       className="mb-3"
                     />
-                    <h1 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-semibold text-[#FAFAF9] leading-tight tracking-tight">
+                    <h1 className="font-display font-bold text-[#FAFAF9]" style={{ fontSize: "clamp(1.6rem,3.5vw,2.4rem)", letterSpacing: "-0.025em", lineHeight: 1.1 }}>
                       {temple.name}
                     </h1>
                   </div>
@@ -142,7 +143,7 @@ export default async function TempleDetailPage({
                       className="text-[#F97316] flex-shrink-0 mt-0.5"
                     />
                     <div>
-                      <p className="text-[10px] text-[#57534E] uppercase tracking-wide font-semibold mb-0.5">
+                      <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
                         Address
                       </p>
                       <p className="text-sm text-[#D6D3D1]">
@@ -158,7 +159,7 @@ export default async function TempleDetailPage({
                       className="text-[#F97316] flex-shrink-0 mt-0.5"
                     />
                     <div>
-                      <p className="text-[10px] text-[#57534E] uppercase tracking-wide font-semibold mb-0.5">
+                      <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
                         Tradition
                       </p>
                       <p className="text-sm text-[#D6D3D1]">{temple.tradition}</p>
@@ -173,7 +174,7 @@ export default async function TempleDetailPage({
                         className="text-[#F97316] flex-shrink-0 mt-0.5"
                       />
                       <div>
-                        <p className="text-[10px] text-[#57534E] uppercase tracking-wide font-semibold mb-0.5">
+                        <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
                           Phone
                         </p>
                         <a
@@ -194,7 +195,7 @@ export default async function TempleDetailPage({
                         className="text-[#F97316] flex-shrink-0 mt-0.5"
                       />
                       <div>
-                        <p className="text-[10px] text-[#57534E] uppercase tracking-wide font-semibold mb-0.5">
+                        <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
                           Website
                         </p>
                         <a
@@ -220,7 +221,7 @@ export default async function TempleDetailPage({
                       className="text-[#F97316] flex-shrink-0 mt-0.5"
                     />
                     <div>
-                      <p className="text-[10px] text-[#57534E] uppercase tracking-wide font-semibold mb-0.5">
+                      <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
                         Region
                       </p>
                       <p className="text-sm text-[#D6D3D1]">
@@ -237,7 +238,7 @@ export default async function TempleDetailPage({
                         className="text-[#F97316] flex-shrink-0 mt-0.5"
                       />
                       <div>
-                        <p className="text-[10px] text-[#57534E] uppercase tracking-wide font-semibold mb-0.5">
+                        <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
                           Founded
                         </p>
                         <p className="text-sm text-[#D6D3D1]">{temple.founded}</p>

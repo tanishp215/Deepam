@@ -8,7 +8,6 @@ import {
   temples,
   getActiveTemples,
   getTemplesByState,
-  STATE_COLORS,
   type Region,
 } from "@/data/temples";
 import { ArrowRight } from "lucide-react";
@@ -42,11 +41,10 @@ const steps = [
 ];
 
 export default function HomePage() {
-  const activeTemples   = getActiveTemples();
-  const sustainingCount = getTemplesByState("sustaining").length;
-  const lightlyCount    = getTemplesByState("lightly-compromising").length;
-  const seriouslyCount  = getTemplesByState("seriously-compromising").length;
-  const attentionCount  = lightlyCount + seriouslyCount;
+  const activeTemples    = getActiveTemples();
+  const sustainingCount  = getTemplesByState("sustaining").length;
+  const lightlyCount     = getTemplesByState("lightly-compromising").length;
+  const seriouslyCount   = getTemplesByState("seriously-compromising").length;
 
   const featuredTemples = temples
     .filter(
@@ -63,16 +61,48 @@ export default function HomePage() {
       {/* ─── MAP HERO — full-screen, interactive ─── */}
       <MapHero />
 
+      {/* ─── STATS BAR ─── */}
+      <section className="bg-[#0D0A07] border-b border-[rgba(249,115,22,0.08)]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-[rgba(249,115,22,0.08)]">
+            {[
+              { value: activeTemples.length,  color: "#FAFAF9",  label: "Temples tracked"        },
+              { value: sustainingCount,        color: "#10B981",  label: "Sustaining"              },
+              { value: lightlyCount,           color: "#F59E0B",  label: "Lightly compromising"    },
+              { value: seriouslyCount,         color: "#F97316",  label: "Seriously compromising"  },
+            ].map(({ value, color, label }) => (
+              <div key={label} className="px-8 py-8 first:pl-0 last:pr-0">
+                <p
+                  className="font-display font-bold tabular-nums"
+                  style={{ fontSize: "clamp(1.75rem,3.5vw,2.75rem)", lineHeight: 1, letterSpacing: "-0.04em", color }}
+                >
+                  {value}
+                </p>
+                <p className="text-[11px] text-[#57534E] mt-2 uppercase tracking-[0.1em]">{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ─── FEATURED TEMPLES ─── */}
       {featuredTemples.length > 0 && (
-        <section className="py-20 bg-[#1A1410] border-t border-[rgba(249,115,22,0.08)]">
+        <section className="py-24 bg-[#0D0A07] border-b border-[rgba(249,115,22,0.08)]">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="pb-6 mb-8 border-b border-[rgba(249,115,22,0.1)]">
-              <h2 className="section-heading text-[#FAFAF9] font-display font-bold">
-                Temples that could use{" "}
-                <span className="text-[#F59E0B]">your support</span>
-              </h2>
-              <p className="text-[14px] text-[#57534E] mt-2 leading-relaxed max-w-xl">
+            <div className="mb-10">
+              <p className="text-[11px] font-semibold text-[#57534E] uppercase tracking-[0.12em] mb-3">
+                Needs attention
+              </p>
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <h2 className="section-heading text-[#FAFAF9] font-display font-bold">
+                  Temples that could use{" "}
+                  <span className="text-[#F59E0B]">your support</span>
+                </h2>
+                <Link href="/temples" className="btn-ghost flex-shrink-0">
+                  View all <ArrowRight size={13} strokeWidth={1.75} />
+                </Link>
+              </div>
+              <p className="text-[14px] text-[#57534E] mt-3 leading-relaxed max-w-xl">
                 Showing patterns consistent with operational tightening. Sustained engagement shifts the trajectory.
               </p>
             </div>
@@ -81,20 +111,18 @@ export default function HomePage() {
                 <TempleCard key={temple.id} temple={temple} raised />
               ))}
             </div>
-            <div className="mt-8">
-              <Link href="/temples" className="btn-ghost">
-                View all temples <ArrowRight size={13} strokeWidth={1.75} />
-              </Link>
-            </div>
           </div>
         </section>
       )}
 
       {/* ─── HOW IT WORKS ─── */}
-      <section className="py-20 bg-[#0D0A07] border-t border-[rgba(249,115,22,0.08)]">
+      <section className="py-24 bg-[#0D0A07] border-b border-[rgba(249,115,22,0.08)]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-12 lg:gap-20">
             <div>
+              <p className="text-[11px] font-semibold text-[#57534E] uppercase tracking-[0.12em] mb-3">
+                The model
+              </p>
               <h2 className="section-heading text-[#FAFAF9] font-display font-bold mb-5">
                 How Deepam <span className="text-[#F59E0B]">works</span>
               </h2>
@@ -116,18 +144,18 @@ export default function HomePage() {
                 >
                   <span
                     className="font-display font-bold leading-none pt-0.5 text-2xl tabular-nums"
-                    style={{ color: "rgba(249,115,22,0.2)", letterSpacing: "-0.03em" }}
+                    style={{ color: "rgba(249,115,22,0.35)", letterSpacing: "-0.03em" }}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
                     <h3
-                      className="font-display font-semibold text-[#D6D3D1] mb-1.5 text-[16px]"
+                      className="font-display font-semibold text-[#D6D3D1] mb-2 text-[15px]"
                       style={{ lineHeight: 1.3, letterSpacing: "-0.015em" }}
                     >
                       {step.title}
                     </h3>
-                    <p className="text-[14px] text-[#78716C] leading-relaxed">
+                    <p className="text-[13px] text-[#78716C] leading-relaxed">
                       {step.description}
                     </p>
                   </div>
@@ -142,7 +170,7 @@ export default function HomePage() {
             <p className="text-[11px] font-semibold text-[#57534E] uppercase tracking-[0.12em] mb-6">
               The four operational states
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
               {(
                 [
                   "sustaining",
@@ -170,32 +198,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── STATS ─── */}
-      <section className="py-16 bg-[#1A1410] border-t border-[rgba(249,115,22,0.08)]">
-        <div className="max-w-7xl mx-auto px-6">
-          <p className="text-[16px] text-[#A8A29E] leading-relaxed max-w-xl">
-            Tracking{" "}
-            <span className="font-semibold text-[#FAFAF9]">
-              {activeTemples.length} Hindu temples
-            </span>{" "}
-            across North Carolina.{" "}
-            <span className="font-semibold text-[#10B981]">
-              {sustainingCount} sustaining
-            </span>{" "}
-            at full standards.{" "}
-            <span className="font-semibold text-[#F97316]">
-              {attentionCount} show patterns
-            </span>{" "}
-            consistent with operational tightening.
-          </p>
-        </div>
-      </section>
-
       {/* ─── CTA ─── */}
-      <section className="py-20 bg-[#0D0A07] border-t border-[rgba(249,115,22,0.12)]">
+      <section
+        className="py-24 bg-[#0D0A07]"
+        style={{
+          background: "radial-gradient(ellipse 60% 70% at 50% 100%, rgba(249,115,22,0.06) 0%, transparent 70%), #0D0A07",
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-10">
             <div className="max-w-lg">
+              <p className="text-[11px] font-semibold text-[#57534E] uppercase tracking-[0.12em] mb-3">
+                Get involved
+              </p>
               <h2 className="section-heading text-[#FAFAF9] font-display font-bold mb-4">
                 Lamps need <span className="text-[#F59E0B]">tending.</span>
               </h2>

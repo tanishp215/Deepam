@@ -79,7 +79,7 @@ function TemplesContent() {
     <>
       <Navigation />
 
-      <main className="min-h-screen bg-[#0D0A07] pt-20 pb-24">
+      <main className="min-h-screen bg-[#0D0A07] pt-[68px] pb-24">
         {/* Page header */}
         <div
           className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-8 relative"

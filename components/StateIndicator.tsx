@@ -65,7 +65,9 @@ export default function StateIndicator({
           />
         )}
       </span>
-      {showLabel && <span>{label}</span>}
+      {showLabel && (
+        <span style={{ fontSize: "11px", fontWeight: 600, lineHeight: 1.4 }}>{label}</span>
+      )}
     </div>
   );
 }
@@ -80,7 +82,7 @@ export function StateDot({ state, size = 10 }: { state: DeepamState; size?: numb
       />
       {state === "sustaining" && (
         <span
-          className="absolute inset-0 rounded-full animate-pulse-slow opacity-35"
+          className="absolute inset-0 rounded-full animate-pulse-slow opacity-40"
           style={{ background: color }}
         />
       )}
