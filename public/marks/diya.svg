@@ -1,0 +1,6 @@
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- lamp body -->
+  <path d="M3 16 Q12 13 21 16 Q19 19 12 19 Q5 19 3 16Z" fill="#1C1A17"/>
+  <!-- flame -->
+  <path d="M12 13 Q12 7 13 6 Q12.5 10 13.5 12 Z" fill="#A47148"/>
+</svg>
