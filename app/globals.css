@@ -159,6 +159,10 @@
     filter: url(#duotone-paper);
   }
 
+  /* ── §5.3 "Read the record" link — oxblood, deepens on hover ── */
+  .record-link { color: var(--oxblood); transition: color 0.15s ease; }
+  .record-link:hover { color: var(--oxblood-deep); }
+
   /* ── §5.3 Temple card — brass underline expands from left on hover ── */
   .temple-card-name-link {
     background-image: linear-gradient(var(--brass), var(--brass));

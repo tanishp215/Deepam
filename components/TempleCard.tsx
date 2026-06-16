@@ -114,19 +114,16 @@ export default function TempleCard({ temple, index }: TempleCardProps) {
         <span>{REGION_LABELS[temple.region]}</span>
         <Link
           href={`/temples/${temple.id}`}
+          className="record-link"
           style={{
             marginLeft: "auto",
-            color: "var(--oxblood)",
             textDecoration: "none",
             fontFamily: "var(--font-sans)",
             fontSize: "13px",
             fontWeight: 500,
             letterSpacing: "0.01em",
             textTransform: "none",
-            transition: "color 0.15s ease",
           }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--oxblood-deep)"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--oxblood)"; }}
         >
           Read the record →
         </Link>
