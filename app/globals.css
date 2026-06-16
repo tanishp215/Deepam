@@ -159,6 +159,18 @@
     filter: url(#duotone-paper);
   }
 
+  /* ── §5.3 Temple card — brass underline expands from left on hover ── */
+  .temple-card-name-link {
+    background-image: linear-gradient(var(--brass), var(--brass));
+    background-size: 0 1px;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    transition: background-size 0.2s ease-out;
+  }
+  .temple-card-name-link:hover {
+    background-size: 100% 1px;
+  }
+
   /* ── Primary filled ── */
   .btn-primary {
     background: #F97316;

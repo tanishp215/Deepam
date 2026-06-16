@@ -1,52 +1,136 @@
 import Link from "next/link";
-import { MapPin, ArrowRight } from "lucide-react";
 import { type Temple, REGION_LABELS } from "@/data/temples";
 import StateIndicator from "./StateIndicator";
 
 interface TempleCardProps {
   temple: Temple;
-  raised?: boolean;
+  index?: number;
+  raised?: boolean;  /* kept for backwards compat — unused in new design */
 }
 
-export default function TempleCard({ temple, raised = false }: TempleCardProps) {
+/* §5.3 — Ledger entry style: border-y hairlines, no card background, no rounded corners */
+export default function TempleCard({ temple, index }: TempleCardProps) {
+  const num = index !== undefined ? String(index).padStart(3, "0") : "—";
+
   return (
-    <Link
-      href={`/temples/${temple.id}`}
-      className={`block p-6 group ${raised ? "card-temple-raised" : "card-temple"}`}
+    <article
+      style={{
+        borderTop: "1px solid rgba(28,26,23,0.12)",
+        borderBottom: "1px solid rgba(28,26,23,0.12)",
+        padding: "28px 0",
+        background: "transparent",
+      }}
     >
-      {/* Header: name + badge */}
-      <div className="flex items-start justify-between gap-3 mb-2">
-        <h3 className="font-display text-[17px] font-bold leading-snug line-clamp-2 text-[#FAFAF9] group-hover:text-[#F97316] transition-colors duration-200">
+      {/* Entry header: issue number + state indicator */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "space-between",
+          gap: "24px",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "11px",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "var(--ink-faint)",
+            lineHeight: 1,
+          }}
+        >
+          No.{" "}{num}
+        </span>
+        <StateIndicator state={temple.deepamState} compact />
+      </div>
+
+      {/* Temple name */}
+      <h3
+        style={{
+          marginTop: "12px",
+          fontFamily: "var(--font-serif)",
+          fontSize: "28px",
+          lineHeight: 1.1,
+          fontWeight: 400,
+          color: "var(--ink)",
+          letterSpacing: "-0.01em",
+        }}
+      >
+        <Link
+          href={`/temples/${temple.id}`}
+          style={{
+            color: "inherit",
+            textDecoration: "none",
+          }}
+          className="temple-card-name-link"
+        >
           {temple.name}
-        </h3>
-        <StateIndicator state={temple.deepamState} size="sm" className="flex-shrink-0 mt-0.5" />
-      </div>
+        </Link>
+      </h3>
 
-      {/* Tradition */}
-      <p className="text-[12px] text-[#A8A29E] mb-3">{temple.tradition}</p>
-
-      {/* Location */}
-      <div className="flex items-center gap-1.5 mb-3">
-        <MapPin size={11} strokeWidth={1.75} className="text-[#57534E] flex-shrink-0" />
-        <span className="text-[12px] text-[#57534E]">{temple.city}, NC</span>
-      </div>
+      {/* Tradition · city */}
+      <p
+        style={{
+          marginTop: "8px",
+          fontFamily: "var(--font-serif)",
+          fontStyle: "italic",
+          fontSize: "15px",
+          color: "var(--ink-muted)",
+          lineHeight: 1.4,
+        }}
+      >
+        {temple.tradition} · {temple.city}, NC
+      </p>
 
       {/* Description */}
-      <p className="text-[14px] text-[#78716C] leading-relaxed line-clamp-2 mb-4">
+      <p
+        className="set-body"
+        style={{
+          marginTop: "16px",
+          fontSize: "16px",
+          lineHeight: 1.55,
+          color: "var(--ink-soft)",
+          maxWidth: "60ch",
+        }}
+      >
         {temple.description}
       </p>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-4 border-t border-[rgba(249,115,22,0.08)]">
-        <span className="text-[12px] text-[#57534E] group-hover:text-[#78716C] transition-colors duration-200">
-          {REGION_LABELS[temple.region]}
-        </span>
-        <ArrowRight
-          size={13}
-          strokeWidth={2}
-          className="text-[#57534E] group-hover:text-[#F97316] -translate-x-0.5 group-hover:translate-x-0 transition-all duration-200"
-        />
+      {/* Footer row: region · read link */}
+      <div
+        style={{
+          marginTop: "20px",
+          display: "flex",
+          alignItems: "center",
+          gap: "16px",
+          fontFamily: "var(--font-mono)",
+          fontSize: "11px",
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          color: "var(--ink-muted)",
+        }}
+      >
+        <span>{REGION_LABELS[temple.region]}</span>
+        <Link
+          href={`/temples/${temple.id}`}
+          style={{
+            marginLeft: "auto",
+            color: "var(--oxblood)",
+            textDecoration: "none",
+            fontFamily: "var(--font-sans)",
+            fontSize: "13px",
+            fontWeight: 500,
+            letterSpacing: "0.01em",
+            textTransform: "none",
+            transition: "color 0.15s ease",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--oxblood-deep)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--oxblood)"; }}
+        >
+          Read the record →
+        </Link>
       </div>
-    </Link>
+    </article>
   );
 }
