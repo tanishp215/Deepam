@@ -1,91 +1,121 @@
-import { type DeepamState, STATE_LABELS, STATE_COLORS } from "@/data/temples";
+import { type DeepamState } from "@/data/temples";
 import { cn } from "@/lib/utils";
+
+/* §5.4 — Typographic state marker system
+   Escalating-triangle notation instead of colored chips.
+   Reads as a measurement / structural notation, not a UI label. */
+
+const STATE_COLOR: Record<DeepamState, string> = {
+  "sustaining":             "var(--state-sustaining)",
+  "lightly-compromising":   "var(--state-tightening)",
+  "seriously-compromising": "var(--state-cutting)",
+  "stripped-down":          "var(--state-minimum)",
+  "insufficient-evidence":  "var(--state-unknown)",
+  "pre-operational":        "var(--state-unknown)",
+};
+
+const STATE_LABEL: Record<DeepamState, string> = {
+  "sustaining":             "Sustaining",
+  "lightly-compromising":   "Quietly Tightening",
+  "seriously-compromising": "Visibly Cutting Back",
+  "stripped-down":          "Operating at Minimum",
+  "insufficient-evidence":  "Insufficient Evidence",
+  "pre-operational":        "In Development",
+};
+
+function StateGlyph({ state }: { state: DeepamState }) {
+  const color = STATE_COLOR[state];
+
+  if (state === "sustaining") {
+    return (
+      <span
+        aria-hidden="true"
+        style={{ color, fontSize: "9px", lineHeight: 1, letterSpacing: 0 }}
+      >
+        ●
+      </span>
+    );
+  }
+
+  if (state === "lightly-compromising") {
+    return (
+      <span aria-hidden="true" style={{ color, fontSize: "9px", lineHeight: 1 }}>
+        ▲
+      </span>
+    );
+  }
+
+  if (state === "seriously-compromising") {
+    return (
+      <span aria-hidden="true" style={{ color, fontSize: "9px", lineHeight: 1, letterSpacing: "1px" }}>
+        ▲▲
+      </span>
+    );
+  }
+
+  if (state === "stripped-down") {
+    return (
+      <span aria-hidden="true" style={{ color, fontSize: "9px", lineHeight: 1, letterSpacing: "1px" }}>
+        ▲▲▲
+      </span>
+    );
+  }
+
+  /* insufficient-evidence + pre-operational — dashed outline circle */
+  return (
+    <span
+      aria-hidden="true"
+      style={{
+        display: "inline-block",
+        width: "8px",
+        height: "8px",
+        borderRadius: "50%",
+        border: `1.5px dashed ${color}`,
+        flexShrink: 0,
+      }}
+    />
+  );
+}
 
 interface StateIndicatorProps {
   state: DeepamState;
-  size?: "sm" | "md" | "lg";
+  compact?: boolean;
   showLabel?: boolean;
+  size?: "sm" | "md" | "lg";
   className?: string;
 }
 
-const STATE_BG: Record<DeepamState, string> = {
-  "sustaining":             "rgba(16,185,129,0.08)",
-  "lightly-compromising":   "rgba(245,158,11,0.1)",
-  "seriously-compromising": "rgba(249,115,22,0.1)",
-  "stripped-down":          "rgba(239,68,68,0.1)",
-  "insufficient-evidence":  "rgba(120,113,108,0.08)",
-  "pre-operational":        "rgba(55,65,81,0.08)",
-};
-
-const STATE_BORDER: Record<DeepamState, string> = {
-  "sustaining":             "rgba(16,185,129,0.22)",
-  "lightly-compromising":   "rgba(245,158,11,0.22)",
-  "seriously-compromising": "rgba(249,115,22,0.22)",
-  "stripped-down":          "rgba(239,68,68,0.25)",
-  "insufficient-evidence":  "rgba(120,113,108,0.18)",
-  "pre-operational":        "rgba(55,65,81,0.18)",
-};
-
-const STATE_TEXT: Record<DeepamState, string> = {
-  "sustaining":             "#6EE7B7",
-  "lightly-compromising":   "#FCD34D",
-  "seriously-compromising": "#FDBA74",
-  "stripped-down":          "#FCA5A5",
-  "insufficient-evidence":  "#A8A29E",
-  "pre-operational":        "#9CA3AF",
-};
-
 export default function StateIndicator({
   state,
-  size = "md",
+  compact = false,
   showLabel = true,
   className,
 }: StateIndicatorProps) {
-  const color      = STATE_COLORS[state];
-  const textColor  = STATE_TEXT[state];
-  const bg         = STATE_BG[state];
-  const border     = STATE_BORDER[state];
-  const label      = STATE_LABELS[state];
-  const dotSize    = size === "sm" ? 5 : size === "lg" ? 10 : 7;
+  const label = STATE_LABEL[state];
+  const color = STATE_COLOR[state];
+  const showText = !compact && showLabel;
 
   return (
-    <div
-      className={cn("state-badge", className)}
-      style={{ background: bg, color: textColor, border: `1px solid ${border}` }}
+    <span
+      className={cn("inline-flex items-center gap-1.5", className)}
+      style={{
+        fontFamily: "var(--font-sans)",
+        fontSize: "11px",
+        fontWeight: 500,
+        fontVariant: "small-caps",
+        letterSpacing: "0.08em",
+        color: color,
+        lineHeight: 1.3,
+      }}
     >
-      <span className="relative flex-shrink-0" style={{ width: dotSize, height: dotSize }}>
-        <span
-          className="absolute inset-0 rounded-full"
-          style={{ background: color }}
-        />
-        {state === "sustaining" && (
-          <span
-            className="absolute inset-0 rounded-full animate-pulse-slow opacity-40"
-            style={{ background: color }}
-          />
-        )}
-      </span>
-      {showLabel && (
-        <span style={{ fontSize: "11px", fontWeight: 600, lineHeight: 1.4 }}>{label}</span>
-      )}
-    </div>
+      <StateGlyph state={state} />
+      {showText && <span>{label}</span>}
+      {!showText && <span className="sr-only">{label}</span>}
+    </span>
   );
 }
 
+/* StateDot kept for backwards compat with any remaining usage */
 export function StateDot({ state, size = 10 }: { state: DeepamState; size?: number }) {
-  const color = STATE_COLORS[state];
-  return (
-    <span className="relative inline-flex flex-shrink-0" style={{ width: size, height: size }}>
-      <span
-        className="absolute inset-0 rounded-full"
-        style={{ background: color }}
-      />
-      {state === "sustaining" && (
-        <span
-          className="absolute inset-0 rounded-full animate-pulse-slow opacity-40"
-          style={{ background: color }}
-        />
-      )}
-    </span>
-  );
+  return <StateGlyph state={state} />;
 }
