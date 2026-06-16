@@ -3,28 +3,88 @@
 @tailwind utilities;
 
 /* ─────────────────────────────────────────────────────
-   Deepam — Warm amber-dark theme
-   Base: #0D0A07 | Accent: saffron #F97316 | Gold: #F59E0B
+   Deepam — Paper Ledger (Direction A)
+   Ground: #F4EFE6 paper | Accents: oxblood + brass
+   §3.1 design tokens — DESIGN_REVAMP_PROMPT.md
 ───────────────────────────────────────────────────── */
 
 @layer base {
   :root {
-    --color-base:     #0D0A07;
-    --color-surface:  #1A1410;
-    --color-raised:   #241D16;
-    --color-border:   rgba(249, 115, 22, 0.15);
-    --color-white:    #FAFAF9;
-    --color-muted:    #A8A29E;
-    --color-faint:    #78716C;
-    --color-saffron:  #F97316;
-    --color-marigold: #F59E0B;
-    --color-gold:     #FCD34D;
+    /* ── Surfaces ── */
+    --paper:        #F4EFE6;
+    --paper-warm:   #EFE7D5;
+    --paper-deep:   #E6DCC5;
 
-    --font-display: var(--font-outfit), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --font-body:    var(--font-outfit), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    /* ── Ink ── */
+    --ink:          #1C1A17;
+    --ink-soft:     #2D2A24;
+    --ink-muted:    #6B6557;
+    --ink-faint:    #9C9583;
 
-    --radius-full: 1000px;
-    --radius-card: 14px;
+    /* ── Accents ── */
+    --oxblood:      #8B2520;
+    --oxblood-deep: #6E1C18;
+    --brass:        #A47148;
+    --brass-light:  #C19A6B;
+    --brass-shadow: #6B4A2B;
+
+    /* ── State palette (desaturated, paired to operational meaning) ── */
+    --state-sustaining:  #3D4A3A;
+    --state-tightening:  #A47148;
+    --state-cutting:     #B8581F;
+    --state-minimum:     #8B2520;
+    --state-unknown:     #9C9583;
+
+    /* ── Direction B (dusk skin — reserved for About hero only) ── */
+    --dusk-ground:  #14110E;
+    --dusk-paper:   #E8DFCB;
+    --dusk-brass:   #C9A24B;
+    --dusk-sindoor: #6B2E1E;
+
+    /* ── Type stack (fallbacks; Next.js sets actual values via font.variable) ── */
+    --font-serif: "Fraunces", "Source Serif 4", Georgia, serif;
+    --font-sans:  "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
+    --font-mono:  "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --font-deva:  "Mukta", var(--font-serif);
+
+    /* ── Type scale (major-third on 17px base) ── */
+    --fs-micro:   11px;
+    --fs-caption: 13px;
+    --fs-body:    17px;
+    --fs-lede:    21px;
+    --fs-deck:    26px;
+    --fs-h3:      32px;
+    --fs-h2:      44px;
+    --fs-h1:      62px;
+    --fs-display: clamp(72px, 10vw, 132px);
+
+    /* ── Spacing (4px base) ── */
+    --space-1:  4px;
+    --space-2:  8px;
+    --space-3:  12px;
+    --space-4:  16px;
+    --space-5:  24px;
+    --space-6:  32px;
+    --space-7:  48px;
+    --space-8:  64px;
+    --space-9:  96px;
+    --space-10: 144px;
+
+    /* ── Radii ── */
+    --r-sm:   2px;
+    --r-md:   3px;
+    --r-pill: 1000px;
+
+    /* ── Hairlines ── */
+    --rule-thin: 1px;
+    --rule-brass: linear-gradient(
+      90deg,
+      transparent       0%,
+      var(--brass-shadow) 8%,
+      var(--brass-light)  50%,
+      var(--brass-shadow) 92%,
+      transparent       100%
+    );
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }

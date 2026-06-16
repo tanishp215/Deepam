@@ -1,12 +1,35 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Fraunces, Inter_Tight, JetBrains_Mono, Mukta } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  axes: ["SOFT", "WONK", "opsz"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
   display: "swap",
-  variable: "--font-outfit",
+});
+
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
+const mukta = Mukta({
+  subsets: ["devanagari", "latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-deva",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -23,8 +46,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={outfit.variable}>
-      <body className={`min-h-screen bg-[#0D0A07] text-[#FAFAF9] antialiased ${outfit.className}`}>
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${interTight.variable} ${jetbrains.variable} ${mukta.variable}`}
+    >
+      <body className="min-h-screen antialiased">
         {children}
       </body>
     </html>
