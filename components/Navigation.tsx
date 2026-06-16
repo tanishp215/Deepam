@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "/",        label: "Home"    },
@@ -13,88 +12,181 @@ const navLinks = [
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[1100] transition-all duration-300 ${
-          scrolled
-            ? "bg-[#0D0A07]/90 backdrop-blur-md border-b border-[rgba(249,115,22,0.12)]"
-            : "bg-gradient-to-b from-[rgba(13,10,7,0.72)] to-transparent backdrop-blur-[2px]"
-        }`}
-        style={{ height: "68px" }}
+        className="fixed top-0 left-0 right-0 z-[1100] transition-colors duration-300"
+        style={{
+          height: "68px",
+          background: "rgba(244,239,230,0.85)",
+          backdropFilter: "saturate(110%) blur(8px)",
+          WebkitBackdropFilter: "saturate(110%) blur(8px)",
+          boxShadow: "0 1px 0 rgba(164,113,72,0.35)",
+        }}
       >
-        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-          <Link href="/" className="font-display text-xl font-bold text-[#FAFAF9] tracking-tight">
+        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between gap-8">
+
+          {/* Wordmark — Fraunces italic with diya glyph replacing the period */}
+          <Link
+            href="/"
+            className="flex items-baseline shrink-0"
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: "22px",
+              fontWeight: 400,
+              fontStyle: "italic",
+              color: "var(--ink)",
+              letterSpacing: "-0.01em",
+              textDecoration: "none",
+            }}
+          >
             Deepam
+            <img
+              src="/marks/diya.svg"
+              alt=""
+              aria-hidden="true"
+              style={{ width: "7px", height: "7px", marginLeft: "2px", verticalAlign: "baseline", opacity: 0.8 }}
+            />
           </Link>
 
-          <div className="hidden md:flex items-center">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="transition-colors duration-200 hover:text-[#F97316]"
-                style={{
-                  fontSize: "17px",
-                  fontWeight: 400,
-                  color: pathname === link.href ? "#F97316" : "#A8A29E",
-                  padding: "13px 34px 13px 0",
-                }}
-              >
-                {link.label}
-              </Link>
-            ))}
+          {/* Desktop nav links */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    letterSpacing: "0.02em",
+                    color: active ? "var(--ink)" : "var(--ink-muted)",
+                    textDecoration: active ? "underline" : "none",
+                    textDecorationColor: "var(--oxblood)",
+                    textUnderlineOffset: "6px",
+                    textDecorationThickness: "1px",
+                    transition: "color 0.15s ease",
+                  }}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </div>
 
-          <div className="hidden md:flex">
-            <Link href="/temples" className="btn-primary">
-              Find Temples
+          {/* CTA — 1px oxblood outline, no fill */}
+          <div className="hidden md:flex shrink-0">
+            <Link
+              href="/temples"
+              className="nav-cta"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "14px",
+                fontWeight: 500,
+                color: "var(--oxblood)",
+                border: "1px solid var(--oxblood)",
+                borderRadius: "2px",
+                padding: "7px 16px",
+                letterSpacing: "0.01em",
+                lineHeight: 1,
+                textDecoration: "none",
+                transition: "background 0.15s ease, color 0.15s ease",
+                display: "inline-block",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = "var(--oxblood)";
+                el.style.color = "var(--paper)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = "transparent";
+                el.style.color = "var(--oxblood)";
+              }}
+            >
+              Read the dispatches
             </Link>
           </div>
 
+          {/* Mobile toggle — no Lucide, plain unicode */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-[#A8A29E] hover:text-[#FAFAF9] transition-colors"
+            className="md:hidden"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "22px",
+              color: "var(--ink-muted)",
+              lineHeight: 1,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "4px",
+            }}
           >
-            {menuOpen ? (
-              <X size={22} strokeWidth={1.75} />
-            ) : (
-              <Menu size={22} strokeWidth={1.75} />
-            )}
+            {menuOpen ? "×" : "≡"}
           </button>
         </div>
       </nav>
 
+      {/* Mobile menu overlay */}
       {menuOpen && (
-        <div className="fixed inset-0 z-40 md:hidden" style={{ top: "68px" }}>
-          <div className="absolute inset-0 bg-[#0D0A07]/95 backdrop-blur-md" onClick={() => setMenuOpen(false)} />
-          <div className="relative z-10 flex flex-col px-6 border-t border-[rgba(249,115,22,0.1)]">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="py-4 border-b border-[rgba(249,115,22,0.08)] text-[#FAFAF9] font-medium hover:text-[#F97316] transition-colors"
-                style={{ fontSize: "17px" }}
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+        <div
+          className="fixed inset-0 z-[1099] md:hidden"
+          style={{
+            top: "68px",
+            background: "rgba(244,239,230,0.97)",
+            backdropFilter: "saturate(110%) blur(12px)",
+            WebkitBackdropFilter: "saturate(110%) blur(12px)",
+          }}
+        >
+          <div className="flex flex-col px-6 pt-2">
+            {navLinks.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "17px",
+                    fontWeight: 500,
+                    color: active ? "var(--ink)" : "var(--ink-soft)",
+                    padding: "16px 0",
+                    borderBottom: "1px solid rgba(164,113,72,0.18)",
+                    letterSpacing: "0.01em",
+                    textDecoration: "none",
+                  }}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <div className="pt-6">
-              <Link href="/temples" className="btn-primary w-full justify-center">
-                Find Temples
+              <Link
+                href="/temples"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: "inline-block",
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "var(--oxblood)",
+                  border: "1px solid var(--oxblood)",
+                  borderRadius: "2px",
+                  padding: "10px 20px",
+                  letterSpacing: "0.01em",
+                  textDecoration: "none",
+                }}
+              >
+                Read the dispatches
               </Link>
             </div>
           </div>
