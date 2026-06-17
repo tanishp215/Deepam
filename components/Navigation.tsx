@@ -8,6 +8,7 @@ const navLinks = [
   { href: "/",        label: "Home"    },
   { href: "/temples", label: "Explore" },
   { href: "/about",   label: "About"   },
+  { href: "/map",     label: "Map"     },
 ];
 
 export default function Navigation() {

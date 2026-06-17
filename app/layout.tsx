@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* §4.1 — paper grain overlay (Stripe Press technique) */}
         <svg
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 z-[9999] opacity-[0.06] mix-blend-multiply"
+          className="pointer-events-none fixed inset-0 z-[9999] opacity-[0.08] mix-blend-overlay"
         >
           <filter id="paper-grain">
             <feTurbulence

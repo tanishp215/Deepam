@@ -10,81 +10,81 @@
 
 @layer base {
   :root {
-    /* ── Surfaces ── */
-    --paper:        #F4EFE6;
-    --paper-warm:   #EFE7D5;
-    --paper-deep:   #E6DCC5;
+    /* ─── Direction C — Monsoon Indigo (chosen primary skin) ─── */
 
-    /* ── Ink ── */
-    --ink:          #1C1A17;
-    --ink-soft:     #2D2A24;
-    --ink-muted:    #6B6557;
-    --ink-faint:    #9C9583;
+    /* Surfaces */
+    --paper:        #0E1626;
+    --paper-warm:   #15203A;
+    --paper-deep:   #1B2A47;
 
-    /* ── Accents ── */
-    --oxblood:      #8B2520;
-    --oxblood-deep: #6E1C18;
-    --brass:        #A47148;
-    --brass-light:  #C19A6B;
-    --brass-shadow: #6B4A2B;
+    /* Ink */
+    --ink:          #E8E2D0;
+    --ink-soft:     #C9BFA4;
+    --ink-muted:    #8C8772;
+    --ink-faint:    #5A5B4F;
 
-    /* ── State palette (desaturated, paired to operational meaning) ── */
-    --state-sustaining:  #3D4A3A;
-    --state-tightening:  #A47148;
-    --state-cutting:     #B8581F;
-    --state-minimum:     #8B2520;
-    --state-unknown:     #9C9583;
+    /* Accents — kumkum brick + palm-leaf ochre */
+    --oxblood:      #8C2F2A;
+    --oxblood-deep: #6B231F;
+    --brass:        #C9B87A;
+    --brass-light:  #DCCC95;
+    --brass-shadow: #7A6F40;
 
-    /* ── Direction B (dusk skin — reserved for About hero only) ── */
+    /* Data-viz state palette — lamp-brightness gradient */
+    --state-sustaining: #E0B53A;
+    --state-tightening: #D88845;
+    --state-cutting:    #C05828;
+    --state-minimum:    #A2331F;
+    --state-unknown:    #5A5B4F;
+
+    /* Direction B — Sanctum at Dusk (alternative skin, do not enable simultaneously) */
     --dusk-ground:  #14110E;
     --dusk-paper:   #E8DFCB;
     --dusk-brass:   #C9A24B;
     --dusk-sindoor: #6B2E1E;
 
-    /* ── Type stack (fallbacks; Next.js sets actual values via font.variable) ── */
-    --font-serif: "Fraunces", "Source Serif 4", Georgia, serif;
-    --font-sans:  "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
-    --font-mono:  "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-    --font-deva:  "Mukta", var(--font-serif);
+    /* Type stack vars */
+    --font-serif:   "Fraunces", "Source Serif 4", Georgia, serif;
+    --font-sans:    "Inter Tight", -apple-system, "Segoe UI", system-ui, sans-serif;
+    --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --font-deva:    "Mukta", var(--font-serif);
 
-    /* ── Type scale (major-third on 17px base) ── */
-    --fs-micro:   11px;
-    --fs-caption: 13px;
-    --fs-body:    17px;
-    --fs-lede:    21px;
-    --fs-deck:    26px;
-    --fs-h3:      32px;
-    --fs-h2:      44px;
-    --fs-h1:      62px;
-    --fs-display: clamp(72px, 10vw, 132px);
+    /* Type scale */
+    --fs-micro:     11px;
+    --fs-caption:   13px;
+    --fs-body:      17px;
+    --fs-lede:      21px;
+    --fs-deck:      26px;
+    --fs-h3:        32px;
+    --fs-h2:        44px;
+    --fs-h1:        62px;
+    --fs-display:   clamp(72px, 10vw, 132px);
 
-    /* ── Spacing (4px base) ── */
-    --space-1:  4px;
-    --space-2:  8px;
-    --space-3:  12px;
-    --space-4:  16px;
-    --space-5:  24px;
-    --space-6:  32px;
-    --space-7:  48px;
-    --space-8:  64px;
-    --space-9:  96px;
+    /* Spacing */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+    --space-9: 96px;
     --space-10: 144px;
 
-    /* ── Radii ── */
-    --r-sm:   2px;
-    --r-md:   3px;
+    /* Radii */
+    --r-sm: 2px;
+    --r-md: 3px;
     --r-pill: 1000px;
 
-    /* ── Hairlines ── */
+    /* Hairlines */
     --rule-thin: 1px;
-    --rule-brass: linear-gradient(
-      90deg,
-      transparent       0%,
+    --rule-brass: linear-gradient(90deg,
+      transparent 0%,
       var(--brass-shadow) 8%,
-      var(--brass-light)  50%,
+      var(--brass-light) 50%,
       var(--brass-shadow) 92%,
-      transparent       100%
-    );
+      transparent 100%);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
