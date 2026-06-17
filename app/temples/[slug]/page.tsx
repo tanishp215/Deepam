@@ -8,20 +8,8 @@ import NCMapClient from "@/components/NCMapClient";
 import {
   getTempleById,
   temples,
-  STATE_LABELS,
-  STATE_COLORS,
   REGION_LABELS,
 } from "@/data/temples";
-import {
-  MapPin,
-  Phone,
-  Globe,
-  Calendar,
-  ArrowLeft,
-  AlertTriangle,
-  Info,
-  HeartHandshake,
-} from "lucide-react";
 import { prisma } from "@/lib/db";
 
 export async function generateStaticParams() {
@@ -65,328 +53,444 @@ export default async function TempleDetailPage({
   if (!temple) notFound();
 
   const pledgeCounts = await getPledgeCounts(temple.id);
-  const color = STATE_COLORS[temple.deepamState];
+  const templeIndex = temples.findIndex((t) => t.id === temple.id);
 
-  const needsSupport =
-    temple.deepamState === "lightly-compromising" ||
-    temple.deepamState === "seriously-compromising" ||
-    temple.deepamState === "stripped-down";
+  const backLink = (
+    <Link
+      href="/temples"
+      style={{
+        fontFamily: "var(--font-sans)",
+        fontSize: "12px",
+        color: "var(--ink-faint)",
+        textDecoration: "none",
+        letterSpacing: "0.04em",
+        display: "inline-block",
+        marginBottom: "32px",
+      }}
+    >
+      &larr; Back to all records
+    </Link>
+  );
 
   return (
     <>
       <Navigation />
+      <main style={{ minHeight: "100vh", background: "var(--paper)" }}>
+        <div
+          className="max-w-5xl mx-auto px-6"
+          style={{ paddingTop: "calc(68px + 52px)", paddingBottom: "96px" }}
+        >
+          {/* Back link */}
+          {backLink}
 
-      <main className="min-h-screen bg-[#0D0A07] pt-[68px] pb-24">
-        {/* Back nav */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 mb-6">
-          <Link
-            href="/temples"
-            className="inline-flex items-center gap-2 text-[13px] text-[#57534E] hover:text-[#F97316] transition-colors cursor-pointer group"
-          >
-            <ArrowLeft
-              size={13}
-              strokeWidth={1.75}
-              className="group-hover:-translate-x-0.5 transition-transform"
+          {/* Header */}
+          <div style={{ marginBottom: "40px" }}>
+            {/* Overline */}
+            <p
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--ink-faint)",
+                marginBottom: "12px",
+              }}
+            >
+              No. {String(templeIndex + 1).padStart(3, "0")} &middot;{" "}
+              {REGION_LABELS[temple.region]}
+            </p>
+
+            {/* Display name */}
+            <h1
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: "clamp(48px, 7vw, 72px)",
+                fontWeight: 300,
+                fontStyle: "italic",
+                lineHeight: 1.05,
+                letterSpacing: "-0.02em",
+                color: "var(--ink)",
+                fontVariationSettings: '"opsz" 144',
+                maxWidth: "20ch",
+                marginBottom: "16px",
+              }}
+            >
+              {temple.name}
+            </h1>
+
+            {/* Tradition + city */}
+            <p
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontStyle: "italic",
+                fontSize: "18px",
+                color: "var(--ink-muted)",
+                marginBottom: "20px",
+              }}
+            >
+              {temple.tradition} &middot; {temple.city}, NC
+            </p>
+
+            {/* State indicator */}
+            <StateIndicator state={temple.deepamState} showLabel size="md" />
+
+            {/* Brass rule */}
+            <hr
+              className="rule-brass"
+              style={{ margin: "32px 0 40px" }}
             />
-            Back to all temples
-          </Link>
-        </div>
+          </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main content */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Header card */}
-              <div
-                className="rounded-xl p-6 sm:p-8 border"
+          {/* Two-column body */}
+          <div
+            className="lg:grid lg:grid-cols-[3fr_1fr]"
+            style={{ gap: "48px" }}
+          >
+            {/* Left column */}
+            <div>
+              {/* Deepam assessment */}
+              <p
                 style={{
-                  background: `radial-gradient(ellipse 80% 60% at 0% 0%, ${color}08 0%, transparent 60%), #1A1410`,
-                  borderColor: `${color}20`,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "11px",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "var(--ink-faint)",
+                  marginBottom: "12px",
                 }}
               >
-                <div className="flex items-start justify-between gap-4 mb-4">
-                  <div className="flex-1">
-                    <StateIndicator
-                      state={temple.deepamState}
-                      size="md"
-                      className="mb-3"
-                    />
-                    <h1 className="font-display font-bold text-[#FAFAF9]" style={{ fontSize: "clamp(1.6rem,3.5vw,2.4rem)", letterSpacing: "-0.025em", lineHeight: 1.1 }}>
-                      {temple.name}
-                    </h1>
-                  </div>
-                  {/* Lamp */}
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: `${color}15` }}
-                  >
-                    <div
-                      className="w-3 h-3 rounded-full"
-                      style={{
-                        background: color,
-                        boxShadow: `0 0 8px ${color}, 0 0 20px ${color}60`,
-                      }}
-                    />
-                  </div>
-                </div>
+                Deepam assessment
+              </p>
+              <p
+                className="set-body"
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "17px",
+                  color: "var(--ink-soft)",
+                  lineHeight: 1.65,
+                  marginBottom: "20px",
+                }}
+              >
+                {temple.stateNote}
+              </p>
 
-                <p className="text-[#A8A29E] text-base mb-6 leading-relaxed">
-                  {temple.description}
-                </p>
-
-                {/* Info grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
-                    <MapPin
-                      size={16}
-                      strokeWidth={1.75}
-                      className="text-[#F97316] flex-shrink-0 mt-0.5"
-                    />
-                    <div>
-                      <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
-                        Address
-                      </p>
-                      <p className="text-sm text-[#D6D3D1]">
-                        {temple.address}, {temple.city}, NC {temple.zip}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
-                    <Info
-                      size={16}
-                      strokeWidth={1.75}
-                      className="text-[#F97316] flex-shrink-0 mt-0.5"
-                    />
-                    <div>
-                      <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
-                        Tradition
-                      </p>
-                      <p className="text-sm text-[#D6D3D1]">{temple.tradition}</p>
-                    </div>
-                  </div>
-
-                  {temple.phone && (
-                    <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
-                      <Phone
-                        size={16}
-                        strokeWidth={1.75}
-                        className="text-[#F97316] flex-shrink-0 mt-0.5"
-                      />
-                      <div>
-                        <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
-                          Phone
-                        </p>
-                        <a
-                          href={`tel:${temple.phone}`}
-                          className="text-sm text-[#D6D3D1] hover:text-[#F97316] transition-colors"
-                        >
-                          {temple.phone}
-                        </a>
-                      </div>
-                    </div>
-                  )}
-
-                  {temple.website && (
-                    <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
-                      <Globe
-                        size={16}
-                        strokeWidth={1.75}
-                        className="text-[#F97316] flex-shrink-0 mt-0.5"
-                      />
-                      <div>
-                        <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
-                          Website
-                        </p>
-                        <a
-                          href={
-                            temple.website.startsWith("http")
-                              ? temple.website
-                              : `https://${temple.website}`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-[#D6D3D1] hover:text-[#F97316] transition-colors break-all"
-                        >
-                          {temple.website.replace(/^https?:\/\//, "")}
-                        </a>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
-                    <Calendar
-                      size={16}
-                      strokeWidth={1.75}
-                      className="text-[#F97316] flex-shrink-0 mt-0.5"
-                    />
-                    <div>
-                      <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
-                        Region
-                      </p>
-                      <p className="text-sm text-[#D6D3D1]">
-                        {REGION_LABELS[temple.region]}
-                      </p>
-                    </div>
-                  </div>
-
-                  {temple.founded && (
-                    <div className="flex items-start gap-3 bg-[#241D16] rounded-lg p-3">
-                      <Info
-                        size={16}
-                        strokeWidth={1.75}
-                        className="text-[#F97316] flex-shrink-0 mt-0.5"
-                      />
-                      <div>
-                        <p className="text-[11px] text-[#57534E] uppercase tracking-[0.08em] font-semibold mb-0.5">
-                          Founded
-                        </p>
-                        <p className="text-sm text-[#D6D3D1]">{temple.founded}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Deepam state assessment */}
-              <div className="bg-[#1A1410] border border-[rgba(249,115,22,0.1)] rounded-xl p-6">
-                <h2 className="font-display text-xl font-semibold text-[#FAFAF9] mb-3">
-                  Deepam assessment
-                </h2>
-                <div
-                  className="rounded-lg p-4 mb-4"
-                  style={{ background: `${color}10`, border: `1px solid ${color}20` }}
+              {/* Insufficient evidence note */}
+              {!temple.hasSufficientEvidence && (
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "11px",
+                    color: "var(--ink-faint)",
+                    lineHeight: 1.6,
+                    borderLeft: "2px solid var(--brass)",
+                    paddingLeft: "14px",
+                    marginBottom: "16px",
+                  }}
                 >
-                  <div className="flex items-center gap-2 mb-2">
-                    <div
-                      className="w-2 h-2 rounded-full flex-shrink-0"
-                      style={{ background: color, boxShadow: `0 0 6px ${color}` }}
-                    />
-                    <span
-                      className="text-sm font-semibold font-body"
-                      style={{ color }}
-                    >
-                      {STATE_LABELS[temple.deepamState]}
-                    </span>
-                  </div>
-                  <p className="text-sm text-[#A8A29E] leading-relaxed">
-                    {temple.stateNote}
-                  </p>
+                  State estimate has wide uncertainty band due to low public
+                  signal volume or linguistic-isolation confounders. A Tier 2
+                  partnership would resolve this ambiguity.
+                </p>
+              )}
+
+              {/* Tier 2 partner */}
+              {temple.tier2Partner && (
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "11px",
+                    letterSpacing: "0.06em",
+                    color: "var(--brass)",
+                    marginBottom: "16px",
+                  }}
+                >
+                  &#9670; Tier 2 partner
+                </p>
+              )}
+
+              {/* Divider */}
+              <hr className="rule-brass" style={{ margin: "32px 0" }} />
+
+              {/* Events + PledgeForm */}
+              {temple.events.length > 0 ? (
+                <div>
+                  {temple.events.map((event) => {
+                    const pd = pledgeCounts[event.name] ?? {
+                      count: 0,
+                      publicNames: [],
+                    };
+                    return (
+                      <div
+                        key={event.name}
+                        style={{
+                          borderTop: "1px solid rgba(201,184,122,0.12)",
+                          paddingTop: "24px",
+                          paddingBottom: "24px",
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontFamily: "var(--font-serif)",
+                            fontSize: "17px",
+                            fontWeight: 400,
+                            color: "var(--ink)",
+                            marginBottom: "6px",
+                          }}
+                        >
+                          {event.name}
+                        </p>
+                        {event.description && (
+                          <p
+                            style={{
+                              fontFamily: "var(--font-serif)",
+                              fontStyle: "italic",
+                              fontSize: "14px",
+                              color: "var(--ink-muted)",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            {event.description}
+                          </p>
+                        )}
+                        {pd.count > 0 && (
+                          <p
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: "11px",
+                              color: "var(--brass)",
+                              letterSpacing: "0.04em",
+                              marginBottom: "4px",
+                            }}
+                          >
+                            {pd.count}{" "}
+                            {pd.count === 1 ? "person" : "people"} pledged
+                          </p>
+                        )}
+                        {pd.publicNames.length > 0 && (
+                          <p
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: "10px",
+                              color: "var(--ink-faint)",
+                              marginBottom: "16px",
+                            }}
+                          >
+                            {pd.publicNames.slice(0, 3).join(", ")}
+                            {pd.publicNames.length > 3
+                              ? ` and ${pd.publicNames.length - 3} more`
+                              : ""}
+                          </p>
+                        )}
+                        <PledgeForm
+                          templeId={temple.id}
+                          eventName={event.name}
+                          pledgeCount={pd.count}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
+              ) : (
+                <p
+                  style={{
+                    fontFamily: "var(--font-serif)",
+                    fontStyle: "italic",
+                    fontSize: "15px",
+                    color: "var(--ink-faint)",
+                    marginBottom: "32px",
+                  }}
+                >
+                  No upcoming events listed for this temple.
+                </p>
+              )}
 
-                {!temple.hasSufficientEvidence && (
-                  <div className="flex items-start gap-3 bg-[rgba(87,83,78,0.15)] border border-[rgba(87,83,78,0.2)] rounded-lg p-3">
-                    <AlertTriangle
-                      size={16}
-                      strokeWidth={1.75}
-                      className="text-[#78716C] flex-shrink-0 mt-0.5"
-                    />
-                    <p className="text-xs text-[#78716C] leading-relaxed">
-                      State estimate has wide uncertainty band due to low public
-                      signal volume or linguistic-isolation confounders. A Tier 2
-                      partnership would resolve this ambiguity.
-                    </p>
-                  </div>
-                )}
+              {/* Divider before map */}
+              <hr className="rule-brass" style={{ margin: "32px 0" }} />
 
-                {temple.tier2Partner && (
-                  <div className="flex items-center gap-2 mt-3 text-xs text-[#F59E0B] bg-[rgba(245,158,11,0.08)] rounded-lg px-3 py-2 border border-[rgba(245,158,11,0.15)]">
-                    <div
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ background: "#F59E0B" }}
-                    />
-                    Tier 2 partner — financial signals supplement this estimate
-                  </div>
-                )}
-              </div>
-
-              {/* Map */}
-              <div className="bg-[#1A1410] border border-[rgba(249,115,22,0.1)] rounded-xl p-4">
-                <h2 className="font-display text-xl font-semibold text-[#FAFAF9] mb-3">
-                  Location
-                </h2>
-                <NCMapClient
-                  temples={[temple]}
-                  selectedId={temple.id}
-                  height="260px"
-                />
-              </div>
+              {/* Location map */}
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "11px",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "var(--ink-faint)",
+                  marginBottom: "16px",
+                }}
+              >
+                Location
+              </p>
+              <NCMapClient
+                temples={[temple]}
+                selectedId={temple.id}
+                height="240px"
+              />
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "11px",
+                  color: "var(--ink-faint)",
+                  marginTop: "10px",
+                  letterSpacing: "0.03em",
+                }}
+              >
+                {temple.address}, {temple.city}, NC {temple.zip}
+              </p>
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-4">
-              {/* How to help */}
-              <div className="bg-[#1A1410] border border-[rgba(249,115,22,0.15)] rounded-xl p-5">
-                <h2 className="font-display text-xl font-semibold text-[#FAFAF9] mb-1">
-                  How to help
-                </h2>
-                <p className="text-xs text-[#78716C] mb-4 leading-relaxed">
-                  Sustained engagement changes the trajectory. Pledge to attend,
-                  donate, or reach out to volunteer.
+            {/* Right column: sidebar */}
+            <aside>
+              {/* Region */}
+              <div
+                style={{
+                  borderTop: "1px solid rgba(201,184,122,0.18)",
+                  paddingTop: "16px",
+                  paddingBottom: "16px",
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "10px",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    color: "var(--ink-faint)",
+                    marginBottom: "4px",
+                  }}
+                >
+                  Region
                 </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "13px",
+                    color: "var(--ink-soft)",
+                  }}
+                >
+                  {REGION_LABELS[temple.region]}
+                </p>
+              </div>
 
-                {/* Events with pledges */}
-                {temple.events.length > 0 ? (
-                  <div className="space-y-4">
-                    {temple.events.map((event) => {
-                      const pd = pledgeCounts[event.name] ?? {
-                        count: 0,
-                        publicNames: [],
-                      };
-                      return (
-                        <div
-                          key={event.name}
-                          className="border border-[rgba(249,115,22,0.1)] rounded-lg p-4 bg-[#241D16]"
-                        >
-                          <div className="flex items-start justify-between gap-2 mb-2">
-                            <div>
-                              <p className="text-sm font-semibold text-[#FAFAF9]">
-                                {event.name}
-                              </p>
-                              {event.description && (
-                                <p className="text-xs text-[#78716C] mt-0.5">
-                                  {event.description}
-                                </p>
-                              )}
-                            </div>
-                            {pd.count > 0 && (
-                              <span className="text-xs bg-[rgba(249,115,22,0.1)] text-[#FB923C] rounded-full px-2 py-0.5 font-semibold flex-shrink-0">
-                                {pd.count} pledged
-                              </span>
-                            )}
-                          </div>
-                          {pd.publicNames.length > 0 && (
-                            <p className="text-[10px] text-[#57534E] mb-3">
-                              {pd.publicNames.slice(0, 3).join(", ")}
-                              {pd.publicNames.length > 3
-                                ? ` and ${pd.publicNames.length - 3} more`
-                                : ""}
-                            </p>
-                          )}
-                          <PledgeForm
-                            templeId={temple.id}
-                            eventName={event.name}
-                            pledgeCount={pd.count}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="text-center py-6 border border-dashed border-[rgba(249,115,22,0.1)] rounded-lg">
-                    <HeartHandshake
-                      size={24}
-                      strokeWidth={1.75}
-                      className="mx-auto mb-2 text-[#57534E]"
-                    />
-                    <p className="text-xs text-[#57534E]">
-                      No upcoming events listed.
-                    </p>
-                  </div>
-                )}
+              {/* Founded */}
+              {temple.founded && (
+                <div
+                  style={{
+                    borderTop: "1px solid rgba(201,184,122,0.18)",
+                    paddingTop: "16px",
+                    paddingBottom: "16px",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "10px",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--ink-faint)",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    Founded
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "13px",
+                      color: "var(--ink-soft)",
+                    }}
+                  >
+                    {temple.founded}
+                  </p>
+                </div>
+              )}
 
-                {/* Donate link */}
-                {temple.website && (
+              {/* Tradition */}
+              <div
+                style={{
+                  borderTop: "1px solid rgba(201,184,122,0.18)",
+                  paddingTop: "16px",
+                  paddingBottom: "16px",
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "10px",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    color: "var(--ink-faint)",
+                    marginBottom: "4px",
+                  }}
+                >
+                  Tradition
+                </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "13px",
+                    color: "var(--ink-soft)",
+                  }}
+                >
+                  {temple.tradition}
+                </p>
+              </div>
+
+              {/* Phone */}
+              {temple.phone && (
+                <div
+                  style={{
+                    borderTop: "1px solid rgba(201,184,122,0.18)",
+                    paddingTop: "16px",
+                    paddingBottom: "16px",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "10px",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--ink-faint)",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    Phone
+                  </p>
+                  <a
+                    href={`tel:${temple.phone}`}
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "13px",
+                      color: "var(--ink-soft)",
+                      textDecoration: "none",
+                    }}
+                  >
+                    {temple.phone}
+                  </a>
+                </div>
+              )}
+
+              {/* Website */}
+              {temple.website && (
+                <div
+                  style={{
+                    borderTop: "1px solid rgba(201,184,122,0.18)",
+                    paddingTop: "16px",
+                    paddingBottom: "16px",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "10px",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--ink-faint)",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    Website
+                  </p>
                   <a
                     href={
                       temple.website.startsWith("http")
@@ -395,44 +499,99 @@ export default async function TempleDetailPage({
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-ghost w-full text-center flex items-center justify-center gap-2 mt-4 cursor-pointer"
+                    style={{
+                      fontFamily: "var(--font-serif)",
+                      fontStyle: "italic",
+                      fontSize: "13px",
+                      color: "var(--oxblood)",
+                      textDecoration: "none",
+                      wordBreak: "break-all",
+                    }}
                   >
-                    <Globe size={14} />
-                    Visit temple website
+                    {temple.website.replace(/^https?:\/\//, "")}
                   </a>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Board contact */}
-              <div className="bg-[#1A1410] border border-[rgba(249,115,22,0.08)] rounded-xl p-5">
-                <h3 className="font-display text-base font-semibold text-[#FAFAF9] mb-2">
+              <div
+                style={{
+                  borderTop: "1px solid rgba(201,184,122,0.18)",
+                  paddingTop: "16px",
+                  paddingBottom: "16px",
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "10px",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    color: "var(--ink-faint)",
+                    marginBottom: "8px",
+                  }}
+                >
                   Temple board
-                </h3>
-                <p className="text-xs text-[#78716C] leading-relaxed mb-3">
-                  If you're a temple board member and want to partner with
-                  Deepam (Tier 2) or request changes to this profile:
+                </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "12px",
+                    color: "var(--ink-faint)",
+                    lineHeight: 1.6,
+                    marginBottom: "10px",
+                  }}
+                >
+                  Board members may request a Tier 2 partnership or corrections
+                  to this profile.
                 </p>
                 <a
                   href="mailto:tanishchess@gmail.com"
-                  className="text-xs text-[#F97316] hover:underline cursor-pointer"
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "12px",
+                    color: "var(--oxblood)",
+                    border: "1px solid var(--oxblood)",
+                    borderRadius: "2px",
+                    padding: "5px 10px",
+                    textDecoration: "none",
+                    display: "inline-block",
+                    letterSpacing: "0.02em",
+                  }}
                 >
                   Contact the project
                 </a>
               </div>
 
               {/* Ethics note */}
-              <div className="bg-[#241D16] border border-[rgba(87,83,78,0.2)] rounded-xl p-4">
-                <p className="text-[10px] text-[#57534E] leading-relaxed">
+              <div
+                style={{
+                  borderTop: "1px solid rgba(201,184,122,0.18)",
+                  paddingTop: "16px",
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "9px",
+                    color: "var(--ink-faint)",
+                    lineHeight: 1.7,
+                    letterSpacing: "0.02em",
+                  }}
+                >
                   All data used for this profile is publicly accessible. Temple
                   boards may request removal from this platform at any time,
                   unconditionally and without explanation.
                 </p>
               </div>
-            </div>
+            </aside>
           </div>
+
+          {/* Bottom rule + back link */}
+          <hr className="rule-brass" style={{ marginTop: "64px", marginBottom: "32px" }} />
+          {backLink}
         </div>
       </main>
-
       <Footer />
     </>
   );
