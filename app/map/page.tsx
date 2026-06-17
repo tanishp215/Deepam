@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
@@ -63,6 +63,13 @@ export default function MapPage() {
   const listRef = useRef<HTMLDivElement>(null);
 
   const activeTemples = getActiveTemples();
+
+  // Scroll selected temple into view when it changes (e.g. via map click)
+  useEffect(() => {
+    if (!selectedTemple || !listRef.current) return;
+    const row = listRef.current.querySelector(`[data-temple-id="${selectedTemple.id}"]`);
+    if (row) row.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [selectedTemple]);
 
   const filtered = useMemo(() => {
     let list = activeTemples.filter((t) => {
@@ -294,11 +301,13 @@ export default function MapPage() {
           <NCMap
             temples={filtered}
             selectedId={selectedTemple?.id ?? undefined}
+            hoveredId={hoveredId ?? undefined}
             onSelect={(id) => {
               if (!id) { setSelectedTemple(null); return; }
               const t = allTemples.find((x) => x.id === id);
               if (t) setSelectedTemple(t);
             }}
+            onHover={(id) => setHoveredId(id)}
             height="100%"
           />
         </div>
