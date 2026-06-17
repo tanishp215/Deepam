@@ -23,10 +23,10 @@ export default function Navigation() {
         className="fixed top-0 left-0 right-0 z-[1100] transition-colors duration-300"
         style={{
           height: "68px",
-          background: "rgba(244,239,230,0.85)",
+          background: "rgba(14,22,38,0.88)",
           backdropFilter: "saturate(110%) blur(8px)",
           WebkitBackdropFilter: "saturate(110%) blur(8px)",
-          boxShadow: "0 1px 0 rgba(164,113,72,0.35)",
+          boxShadow: "0 1px 0 rgba(201,184,122,0.3)",
         }}
       >
         <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between gap-8">
@@ -142,7 +142,7 @@ export default function Navigation() {
           className="fixed inset-0 z-[1099] md:hidden"
           style={{
             top: "68px",
-            background: "rgba(244,239,230,0.97)",
+            background: "rgba(14,22,38,0.97)",
             backdropFilter: "saturate(110%) blur(12px)",
             WebkitBackdropFilter: "saturate(110%) blur(12px)",
           }}
