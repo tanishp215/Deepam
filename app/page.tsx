@@ -1,14 +1,24 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Asterism from "@/components/Asterism";
 import TempleCard from "@/components/TempleCard";
-import HeroMap from "@/components/HeroMap";
+import TempleSheet from "@/components/TempleSheet";
 import {
   temples,
   getActiveTemples,
   getTemplesByState,
+  type Temple,
 } from "@/data/temples";
+
+const Constellation = dynamic(
+  () => import("@/components/Constellation"),
+  { ssr: false }
+);
 
 const steps = [
   {
@@ -34,6 +44,8 @@ const steps = [
 ];
 
 export default function HomePage() {
+  const [selectedTemple, setSelectedTemple] = useState<Temple | null>(null);
+
   const activeTemples   = getActiveTemples();
   const sustainingCount = getTemplesByState("sustaining").length;
   const lightlyCount    = getTemplesByState("lightly-compromising").length;
@@ -53,11 +65,11 @@ export default function HomePage() {
     <>
       <Navigation />
 
-      {/* ─── §6.1.1 DISPATCH HERO ─── */}
+      {/* ─── §6.1.1 DISPATCH HERO TEXT ─── */}
       <section>
         <div
           className="max-w-4xl mx-auto px-6"
-          style={{ paddingTop: "calc(68px + 52px)", paddingBottom: "36px" }}
+          style={{ paddingTop: "calc(68px + 52px)", paddingBottom: "32px" }}
         >
           {/* Dateline */}
           <p
@@ -72,7 +84,7 @@ export default function HomePage() {
               marginBottom: "22px",
             }}
           >
-            No. 27 · Dispatch from June 16, 2026
+            No. 27 · Dispatch from June 17, 2026
           </p>
 
           {/* Headline */}
@@ -88,6 +100,7 @@ export default function HomePage() {
               fontVariationSettings: '"opsz" 144',
               maxWidth: "18ch",
               marginBottom: "22px",
+              paddingBottom: "4px",
             }}
           >
             Twenty-six lamps in North&nbsp;Carolina.
@@ -103,74 +116,48 @@ export default function HomePage() {
               color: "var(--ink-muted)",
               fontVariationSettings: '"opsz" 32',
               maxWidth: "46ch",
-              marginBottom: "28px",
+              marginBottom: 0,
             }}
           >
-            Seven are dimming. We have been tracking them since 2025.
+            Seven are dimming. Connected by tradition. Tracked since 2025.
           </p>
-
-          {/* §5.2 — Typographic view toggle (stub; Constellation wired in next step) */}
-          <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "11px",
-                fontWeight: 500,
-                fontVariant: "small-caps",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "var(--ink-faint)",
-              }}
-            >
-              View ·
-            </span>
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "12px",
-                fontWeight: 500,
-                fontVariant: "small-caps",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                color: "var(--ink)",
-                textDecoration: "underline",
-                textDecorationColor: "var(--oxblood)",
-                textUnderlineOffset: "5px",
-                textDecorationThickness: "1px",
-              }}
-            >
-              Map
-            </span>
-            <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "var(--ink-faint)" }}>
-              /
-            </span>
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "12px",
-                fontWeight: 500,
-                fontVariant: "small-caps",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                color: "var(--ink-muted)",
-              }}
-            >
-              Constellation
-            </span>
-          </div>
         </div>
-
-        {/* Map — full-width, below the text */}
-        <HeroMap temples={activeTemples} />
       </section>
+
+      {/* ─── §6.1.2 CONSTELLATION — full-width ─── */}
+      <div style={{ width: "100%", marginTop: "36px" }}>
+        <Constellation
+          temples={getActiveTemples()}
+          onSelect={(t) => setSelectedTemple(t)}
+        />
+      </div>
+
+      {/* ─── §6.1.3 ONWARD LINK TO /map ─── */}
+      <div className="max-w-4xl mx-auto px-6" style={{ marginTop: "24px" }}>
+        <Link
+          href="/map"
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "13px",
+            fontWeight: 500,
+            fontVariant: "small-caps",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "var(--oxblood)",
+            textDecoration: "none",
+          }}
+        >
+          See where they sit in the state &rarr;
+        </Link>
+      </div>
 
       {/* ─── CONTENT COLUMN ─── */}
       <div className="max-w-4xl mx-auto px-6">
 
-        {/* §6.1.2 Asterism */}
+        {/* §6.1.4 Asterism */}
         <Asterism />
 
-        {/* §6.1.3 Numbers as ledger prose */}
+        {/* §6.1.5 Numbers as ledger prose */}
         <section aria-label="Summary figures">
           <p
             style={{
@@ -185,12 +172,11 @@ export default function HomePage() {
           >
             We are tracking <Num>{activeTemples.length}</Num> temples across
             North Carolina. <Num>{sustainingCount}</Num>{" "}
-            {sustainingCount === 1 ? "is" : "are"} sustaining their full ritual
-            standard.{" "}
+            {sustainingCount === 1 ? "is" : "are"} burning at full brightness.{" "}
             {lightlyCount > 0 && (
               <>
                 <Num>{lightlyCount}</Num>{" "}
-                {lightlyCount === 1 ? "is" : "are"} quietly tightening.{" "}
+                {lightlyCount === 1 ? "is" : "are"} quietly cooling.{" "}
               </>
             )}
             {seriouslyCount > 0 && (
@@ -210,10 +196,10 @@ export default function HomePage() {
           </p>
         </section>
 
-        {/* §6.1.4 Asterism */}
+        {/* §6.1.6 Asterism */}
         <Asterism />
 
-        {/* §6.1.5 Three lamps dimming */}
+        {/* §6.1.7 Three lamps dimming */}
         {dimmingTemples.length > 0 && (
           <section aria-label="Temples needing attention">
             <div style={{ marginBottom: "32px" }}>
@@ -251,48 +237,27 @@ export default function HomePage() {
               ))}
             </div>
 
-            {dimmingCount > 3 && (
-              <div style={{ marginTop: "32px" }}>
-                <Link
-                  href="/temples"
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "13px",
-                    fontWeight: 500,
-                    fontVariant: "small-caps",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "var(--brass)",
-                    textDecoration: "none",
-                  }}
-                >
-                  Read all {dimmingCount} records →
-                </Link>
-              </div>
-            )}
-            {dimmingCount <= 3 && (
-              <div style={{ marginTop: "32px" }}>
-                <Link
-                  href="/temples"
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "13px",
-                    fontWeight: 500,
-                    fontVariant: "small-caps",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "var(--brass)",
-                    textDecoration: "none",
-                  }}
-                >
-                  View all {activeTemples.length} records →
-                </Link>
-              </div>
-            )}
+            <div style={{ marginTop: "32px" }}>
+              <Link
+                href="/temples"
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  fontVariant: "small-caps",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "var(--brass)",
+                  textDecoration: "none",
+                }}
+              >
+                Read all {dimmingCount} records &rarr;
+              </Link>
+            </div>
           </section>
         )}
 
-        {/* §6.1.6 How Deepam works — colophon */}
+        {/* §6.1.8 How Deepam works — colophon */}
         <section aria-label="Methodology" style={{ marginTop: "80px" }}>
           <div
             style={{
@@ -317,7 +282,6 @@ export default function HomePage() {
                 The method
               </p>
               <p
-                className="set-body"
                 style={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "17px",
@@ -333,7 +297,6 @@ export default function HomePage() {
                 institution emits before it asks for help.
               </p>
               <p
-                className="set-body"
                 style={{
                   fontFamily: "var(--font-serif)",
                   marginTop: "20px",
@@ -343,7 +306,7 @@ export default function HomePage() {
                   maxWidth: "50ch",
                 }}
               >
-                The model treats silence as information — not randomly missing,
+                The model treats silence as information. Not randomly missing,
                 but missing in a pattern that correlates with financial
                 contraction. This is the{" "}
                 <span
@@ -379,7 +342,7 @@ export default function HomePage() {
                 <div
                   key={step.num}
                   style={{
-                    borderTop: "1px solid rgba(28,26,23,0.10)",
+                    borderTop: "1px solid rgba(201,184,122,0.12)",
                     paddingTop: "18px",
                     paddingBottom: "18px",
                     display: "grid",
@@ -391,7 +354,7 @@ export default function HomePage() {
                     style={{
                       fontFamily: "var(--font-mono)",
                       fontSize: "11px",
-                      color: "rgba(164,113,72,0.55)",
+                      color: "rgba(201,184,122,0.45)",
                       lineHeight: 1.6,
                       paddingTop: "1px",
                     }}
@@ -425,15 +388,15 @@ export default function HomePage() {
                   </div>
                 </div>
               ))}
-              <div style={{ borderTop: "1px solid rgba(28,26,23,0.10)" }} />
+              <div style={{ borderTop: "1px solid rgba(201,184,122,0.12)" }} />
             </div>
           </div>
         </section>
 
-        {/* §6.1.7 Asterism */}
+        {/* §6.1.9 Asterism */}
         <Asterism />
 
-        {/* §6.1.8 Closing call */}
+        {/* §6.1.10 Closing call */}
         <section aria-label="Closing" style={{ paddingBottom: "96px" }}>
           <p
             style={{
@@ -445,6 +408,7 @@ export default function HomePage() {
               lineHeight: 1.65,
               maxWidth: "48ch",
               marginBottom: "24px",
+              paddingBottom: "4px",
             }}
           >
             Each lamp the model marks is a community of hundreds. Each pledge
@@ -465,7 +429,7 @@ export default function HomePage() {
                 textUnderlineOffset: "5px",
               }}
             >
-              Read the next record →
+              Read the next record &rarr;
             </Link>
           </p>
         </section>
@@ -473,6 +437,12 @@ export default function HomePage() {
       </div>
 
       <Footer />
+
+      {/* TempleSheet — outside all containers for full-viewport coverage */}
+      <TempleSheet
+        temple={selectedTemple}
+        onClose={() => setSelectedTemple(null)}
+      />
     </>
   );
 }
@@ -486,7 +456,6 @@ function Num({ children }: { children: number }) {
         fontVariantNumeric: "tabular-nums",
         color: "var(--ink)",
         fontSize: "0.88em",
-        letterSpacing: "0.01em",
       }}
     >
       {children}
